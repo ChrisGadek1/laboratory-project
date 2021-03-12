@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'basic.html' %}
 
-</body>
-</html>
+{% block nav %}
+    {% if user.is_authenticated %}
+        <button id="login-button" class="btn-primary" onclick="location.href = 'http://127.0.0.1:8000/'">Logout</button>
+    {% endif %}
+{% endblock %}

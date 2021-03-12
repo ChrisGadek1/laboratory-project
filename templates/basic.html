@@ -9,11 +9,16 @@
     <link rel="stylesheet" href="{% static 'css/basic.css' %}">
 </head>
 <body>
+
+
     <nav id="main-nav">
-        <button id="login-button" class="btn-primary">Login</button>
+        {% block nav %}
+            <button id="login-button" class="btn-primary" onclick="location.href = 'http://127.0.0.1:8000/login/';">Login</button>
+        {% endblock %}
     </nav>
     <div id="main-block">
         {% block content %}
+
         {% endblock %}
     </div>
 
