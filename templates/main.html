@@ -1,7 +1,1 @@
 {% extends 'basic.html' %}
-
-{% block nav %}
-    {% if user.is_authenticated %}
-        <button id="login-button" class="btn-primary" onclick="location.href = 'http://127.0.0.1:8000/'">Logout</button>
-    {% endif %}
-{% endblock %}
