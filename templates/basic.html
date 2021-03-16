@@ -3,18 +3,21 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Baza danych próbek</title>
+    {% block title %}
+    {% endblock %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/basic.css' %}">
 </head>
 <body>
 
     <nav id="main-nav">
         {% if user.is_authenticated %}
-            <button id="login-button" class="btn-primary" onclick="location.href = '/logout'">Logout</button>
+            <button id="login-button" class="btn-primary" onclick="location.href = 'accounts/logout'">Logout</button>
         {% else %}
-            <button id="login-button" class="btn-primary" onclick="location.href = '/login';">Login</button>
+            <button id="login-button" class="btn-primary" onclick="location.href = 'accounts/login';">Login</button>
         {% endif %}
         {% block nav %}
         {% endblock %}
