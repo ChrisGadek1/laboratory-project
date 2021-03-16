@@ -14,7 +14,9 @@
 <body>
 
     <nav id="main-nav">
+
         {% if user.is_authenticated %}
+            <p id="user-name" class="badge badge-primary">{{  user.username }}</p>
             <button id="login-button" class="btn-primary" onclick="location.href = 'accounts/logout'">Logout</button>
         {% else %}
             <button id="login-button" class="btn-primary" onclick="location.href = 'accounts/login';">Login</button>

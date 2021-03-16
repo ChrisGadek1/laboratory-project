@@ -1,0 +1,39 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+    <title>Baza danych próbek</title>
+
+    <style>
+
+
+
+        #welcome-wrapper{
+            width: 80vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+
+    </style>
+{% endblock %}
+
+{% block nav %}
+
+    <h3 style="text-align: center"> Strona Główna </h3>
+
+{% endblock %}
+
+{% block content %}
+
+    <div id="welcome-wrapper">
+        <h1 id="welcome-h1">Witaj w aplikacji do przechowywania próbek!</h1>
+        <h3 id="welcome-h2">Aby uzyskać dostęp do bazy danych, zaloguj się.</h3>
+    </div>
+
+
+{% endblock %}

@@ -23,3 +23,10 @@ body{
 #main-block{
     margin-top: 60px;
 }
+
+#user-name{
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    font-size: 25px;
+}

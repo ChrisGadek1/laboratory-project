@@ -5,9 +5,7 @@
 
     <style>
 
-
-
-        #welcome-wrapper{
+        #wrapper-logged{
             width: 80vw;
             padding: 2vw;
             background-color: #c8d4ff;
@@ -17,6 +15,25 @@
             -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
             -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
             box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+
+        .main-button{
+            transition: 0.4s;
+            width: max-content;
+            margin: auto auto 5vh;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 28px;
+            background-color: #b2b2ff;
+            -webkit-box-shadow: 3px 3px 12px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 3px 3px 12px 0px rgba(0,0,0,0.75);
+            box-shadow: 3px 3px 12px 0px rgba(0,0,0,0.75);
+        }
+
+        .main-button:hover{
+            background-color: #8e90ff;
+            transition: 0.4s;
+            cursor: pointer;
         }
 
     </style>
@@ -30,10 +47,23 @@
 
 {% block content %}
 
-    <div id="welcome-wrapper">
-        <h1 id="welcome-h1">Witaj w aplikacji do przechowywania próbek!</h1>
-        <h3 id="welcome-h2">Aby uzyskać dostęp do bazy danych, zaloguj się.</h3>
-    </div>
+    <section id="wrapper-logged">
+        <div class="main-button">
+            <p>Dodaj nową próbkę</p>
+        </div>
+        <div class="main-button">
+            <p>Wyszukaj </p>
+        </div>
+        <div class="main-button">
+            <p>Edytuj pozostałe dane</p>
+        </div>
+        <div class="main-button">
+            <p>Generuj Raporty</p>
+        </div>
+        <div class="main-button">
+            <p>Dodaj Użytkownika</p>
+        </div>
+    </section>
 
 
 {% endblock %}
