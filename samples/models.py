@@ -9,17 +9,42 @@ from datetime import date
 class WIJHARS(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return "%s" % self.name
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
 
 class ControlType(models.Model):
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "%s" % self.name
+
+    def __unicode__(self):
+        return u'%s' % self.name
 
 
 class MetodAndNorm(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return "%s" % self.name
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
 
 class Type(models.Model):
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "%s" % self.name
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
 
 
 class Sample(models.Model):
