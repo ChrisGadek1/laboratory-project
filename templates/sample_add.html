@@ -1,0 +1,10 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+
+<form class="login_container" method="POST"> {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="dodaj" class="btn-primary"/>
+</form>
+
+{% endblock %}
