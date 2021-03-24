@@ -1,10 +1,255 @@
 {% extends 'basic.html' %}
 
-{% block content %}
+{% block title %}
+    <title>dodaj próbkę</title>
+    <style>
+        .form-part-desc{
+            font-size: 26px;
+        }
 
-<form class="login_container" method="POST"> {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="dodaj" class="btn-primary"/>
-</form>
+        #sample-form{
+            width: 65vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+
+    .sample-field-wrapper{
+        margin: 15px 15px 30px 15px;
+        display: block;
+        width: 220px;
+    }
+
+    .sample-field-wrapper-form2{
+        margin: 15px 15px 30px 20%;
+        display: block;
+        width: 220px;
+    }
+
+    .sample-field-wrapper > *, .sample-field-wrapper-form2 > *{
+        text-align: left;
+        display: block;
+        width: 100%;
+    }
+
+    textarea{
+        max-height: 70px;
+    }
+
+    #sample-dates-form > *{
+        display: inline-block;
+    }
+
+    #sample-dates-form{
+        border-top: #2b29ff 1px solid;
+        border-bottom: #2b29ff 1px solid;
+    }
+
+    @media(max-width: 870px){
+        #divider-form1-inner{
+            width: 0px;
+        }
+    }
+
+    @media(min-width: 871px){
+        #divider-form1-inner{
+            width: 1px;
+            height: 280px;
+            display: inline-block;
+            background-color: #2b29ff;
+        }
+        .form1-last-part-inner{
+            display: inline-block;
+        }
+    }
+
+
+    #divider{
+        width: 90%;
+        height: 3px;
+        background-color: #2b29ff;
+        margin: 30px auto 30px auto;
+    }
+
+    .form-part-title{
+        margin-top: 20px;
+        text-align: left;
+        margin-left: 20%;
+        font-size: 20px;
+    }
+
+    .form-inner-wrapper > * > *{
+        display: inline-block;
+    }
+
+    .form-inner-wrapper > *{
+        display: inline-block;
+    }
+
+    .form-inner-wrapper > #bordered-div{
+        border-bottom: #2b29ff 1px solid;
+    }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<section id="sample-form">
+    <form class="login_container" method="POST"> {% csrf_token %}
+        <div class="form-part-desc">1. Dane o Próbce</div>
+        <div class="sample-field-wrapper">
+            <label for="{{ form1.number.id_for_label }}">numer próbki</label>
+            {{ form1.number }}
+        </div>
+        <div class="sample-field-wrapper">
+            <label for="{{ form1.code.id_for_label }}">kod próbki</label>
+            {{ form1.code }}
+        </div>
+        <div class="sample-field-wrapper">
+            <label for="{{ form1.WIJHARS.id_for_label }}">WIJHARS</label>
+            {{ form1.WIJHARS }}
+        </div>
+        <div class="sample-field-wrapper">
+            <label for="{{ form1.assortment.id_for_label }}">asortyment</label>
+            {{ form1.assortment }}
+        </div>
+        <div id="sample-dates-form">
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.admission_date.id_for_label }}">data pobrania</label>
+                {{ form1.admission_date }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.expiration_date.id_for_label }}">data przydatności</label>
+                {{ form1.expiration_date }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.completion_date.id_for_label }}">data zakończenia badań</label>
+                {{ form1.completion_date }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.additional_comment.id_for_label }}">dodatkowy komentarz</label>
+                {{ form1.additional_comment }}
+            </div>
+        </div>
+        <div id="form1-last-part">
+            <div class="form1-last-part-inner">
+                <div class="sample-field-wrapper">
+                    <label for="{{ form1.customer_name.id_for_label }}">nazwa klienta</label>
+                    {{ form1.customer_name }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form1.size.id_for_label }}">wielkość próbki</label>
+                    {{ form1.size }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form1.condition.id_for_label }}">stan próbki</label>
+                    {{ form1.condition }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form1.appeal_analysis.id_for_label }}">analiza odwoławcza</label>
+                    {{ form1.appeal_analysis }}
+                </div>
+            </div>
+            <div id="divider-form1-inner"></div>
+            <div class="form1-last-part-inner">
+                <div class="sample-field-wrapper">
+                    <label for="{{ form1.control_type.id_for_label }}">rodzaj kontroli</label>
+                    {{ form1.control_type }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form1.sampling_method.id_for_label }}">metoda/norma pobrania</label>
+                    {{ form1.sampling_method }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form1.type.id_for_label }}">rodzaj próbki</label>
+                    {{ form1.type }}
+                </div>
+            </div>
+        </div>
+
+        <div id="divider"></div>
+        <div class="form-part-desc">2. Dane z protokołu przyjęcia</div>
+        <div class="form-part-title"> Producent</div>
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.manufacturer_name.id_for_label }}">nazwa</label>
+                {{ form2.manufacturer_name }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.manufacturer_address.id_for_label }}">adres</label>
+                {{ form2.manufacturer_address }}
+            </div>
+        </div>
+        <div class="form-part-title"> Pobierający próbki (dwie osoby)</div>
+        <div class="form-inner-wrapper">
+            <div id="bordered-div">
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.sample_getter1_name.id_for_label }}">imię</label>
+                    {{ form2.sample_getter1_name }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.sample_getter1_surname.id_for_label }}">nazwisko</label>
+                    {{ form2.sample_getter1_surname }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.sample_getter1_position.id_for_label }}">stanowisko</label>
+                    {{ form2.sample_getter1_position }}
+                </div>
+            </div>
+            <div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.sample_getter2_name.id_for_label }}">imię</label>
+                    {{ form2.sample_getter2_name }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.sample_getter2_surname.id_for_label }}">nazwisko</label>
+                    {{ form2.sample_getter2_surname }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.sample_getter2_position.id_for_label }}">stanowisko</label>
+                    {{ form2.sample_getter2_position }}
+                </div>
+            </div>
+        </div>
+        <div class="sample-field-wrapper-form2">
+            <label for="{{ form2.manufacturer.id_for_label }}">dostawca/sprzedawca</label>
+            {{ form2.manufacturer }}
+        </div>
+        <div class="form-part-title">Odbiorca</div>
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.final_consumer.id_for_label }}">konsument finalny</label>
+                {{ form2.final_consumer }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.consumer_name.id_for_label }}">nazwa</label>
+                {{ form2.consumer_name }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.consumer_address.id_for_label }}">adres</label>
+                {{ form2.consumer_address }}
+            </div>
+        </div>
+        <div class="sample-field-wrapper-form2">
+            <label for="{{ form2.order_number.id_for_label }}">numer zlecenia</label>
+            {{ form2.order_number }}
+        </div>
+        <div class="sample-field-wrapper-form2">
+            <label for="{{ form2.mechanism_name_and_symbol.id_for_label }}">nazwa i symbol mechanizmu</label>
+            {{ form2.manufacturer }}
+        </div>
+        <div class="sample-field-wrapper-form2">
+            <label for="{{ form2.sample_delivery.id_for_label }}">sposób dostarczenia próbki</label>
+            {{ form2.sample_delivery }}
+        </div>
+        <input type="submit" value="dodaj" class="btn-primary"/>
+    </form>
+</section>
+
 
 {% endblock %}

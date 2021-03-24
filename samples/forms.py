@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from .models import Sample
+from .models import FormPart1, FormPart2
 from django import forms
 
 
@@ -10,7 +10,7 @@ class DateInput(forms.DateInput):
 
 class SampleForm(forms.ModelForm):
     class Meta:
-        model = Sample
+        model = FormPart1
         fields = ('number','code','WIJHARS','assortment','admission_date','completion_date', 'expiration_date','additional_comment',
                   'customer_name','size','condition','appeal_analysis','control_type','type','sampling_method')
         labels = {
@@ -35,4 +35,28 @@ class SampleForm(forms.ModelForm):
             'admission_date' : DateInput,
             'expiration_date' : DateInput,
             'completion_date' : DateInput,
+        }
+
+
+class FormPart2(forms.ModelForm):
+    class Meta:
+        model = FormPart2
+        fields = ('manufacturer_name', 'manufacturer_address','sample_getter1_name','sample_getter1_surname','sample_getter1_position','sample_getter2_name','sample_getter2_surname',
+                  'sample_getter2_position','manufacturer','final_consumer','consumer_name','consumer_address','order_number','mechanism_name_and_symbol','sample_delivery')
+        labels = {
+            'manufacturer_name': _('nazwa'),
+            'manufacturer_address': _('adres'),
+            'sample_getter1_name': _('imię'),
+            'sample_getter1_surname': _('nazwisko'),
+            'sample_getter1_position': _('stanowisko'),
+            'sample_getter2_name': _('imię'),
+            'sample_getter2_surname': _('nazwisko'),
+            'sample_getter2_position': _('stanowisko'),
+            'manufacturer': _('producent (nazwa i adres)'),
+            'final_consumer': _('konsument finalny'),
+            'consumer_name': _('nazwa'),
+            'consumer_address': _('address'),
+            'order_number': _('numer zlecenia'),
+            'mechanism_name_and_symbol': _('nazwa i symbol mechanizmu'),
+            'sample_delivery': _('sposób dostarczenia próbki')
         }
