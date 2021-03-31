@@ -1,0 +1,192 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+    <title>dodaj próbkę</title>
+    <style>
+        .form-part-desc{
+            font-size: 26px;
+        }
+
+        #sample-form{
+            width: 65vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+
+    .sample-field-wrapper{
+        margin: 15px 15px 30px 15px;
+        display: block;
+        width: 220px;
+    }
+
+    .sample-field-wrapper-form2{
+        margin: 15px 15px 30px 20%;
+        display: block;
+        width: 220px;
+    }
+
+    .sample-field-wrapper > *, .sample-field-wrapper-form2 > *{
+        text-align: left;
+        display: block;
+        width: 100%;
+    }
+
+    textarea{
+        max-height: 70px;
+    }
+
+    #sample-dates-form > *{
+        display: inline-block;
+    }
+
+    #sample-dates-form{
+        border-top: #2b29ff 1px solid;
+        border-bottom: #2b29ff 1px solid;
+    }
+
+    @media(max-width: 870px){
+        #divider-form1-inner{
+            width: 0px;
+        }
+    }
+
+    @media(min-width: 871px){
+        #divider-form1-inner{
+            width: 1px;
+            height: 280px;
+            display: inline-block;
+            background-color: #2b29ff;
+        }
+        .form1-last-part-inner{
+            display: inline-block;
+        }
+    }
+
+
+    #divider{
+        width: 90%;
+        height: 3px;
+        background-color: #2b29ff;
+        margin: 30px auto 30px auto;
+    }
+
+    .form-part-title{
+        margin-top: 20px;
+        text-align: left;
+        margin-left: 20%;
+        font-size: 20px;
+    }
+
+    .form-inner-wrapper > * > *{
+        display: inline-block;
+    }
+
+    .form-inner-wrapper > *{
+        display: inline-block;
+    }
+
+    .form-inner-wrapper > #bordered-div{
+        border-bottom: #2b29ff 1px solid;
+    }
+
+    </style>
+{% endblock %}
+
+
+{% block content %}
+<section id="sample-form">
+    <form class="login_container" method="POST"> {% csrf_token %}
+
+
+        <div id="divider"></div>
+        <div class="form-part-desc">1. Informacje o próbce </div>
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.sampling.id_for_label }}">Numer próbki </label>
+                {{ form2.sampling  }}
+            </div>
+        </div>
+
+
+        <div id="divider"></div>
+        <div class="form-part-desc">2. Badania </div>
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.name.id_for_label }}">Nazwa</label>
+                {{ form2.name  }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.marking.id_for_label }}">Oznakowanie</label>
+                {{ form2.marking }}
+            </div>
+        </div>
+        <div class="form-inner-wrapper">
+            <div id="bordered-div">
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.nutritional_value.id_for_label }}">Wartość odżywcza</label>
+                    {{ form2.nutritional_value }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.specification.id_for_label }}">Specyfikacja</label>
+                    {{ form2.specification }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.ordinance.id_for_label }}">Rozporządzenie</label>
+                    {{ form2.ordinance }}
+                </div>
+
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.samples_number.id_for_label }}">Liczba próbek do badania</label>
+                    {{ form2.samples_number }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.result.id_for_label }}">Wynik badania</label>
+                    {{ form2.result }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.start_date.id_for_label }}">Data rozpoczęcia</label>
+                    {{ form2.start_date }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.completion_date.id_for_label }}">Data zakończenia</label>
+                    {{ form2.completion_date }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.status.id_for_label }}">Status metody</label>
+                     {{ form2.status }}
+                </div>
+                <div class="sample-field-wrapper">
+                    <label for="{{ form2.uncertainty.id_for_label }}">Niepewność, LOD, LOQ</label>
+                    {{ form2.uncertainty }}
+                </div>
+            </div>
+        </div>
+
+
+        <div id="divider"></div>
+        <div class="form-part-desc">3. Podsumowanie </div>
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.summary_meet_requirements.id_for_label }}">Czy próbka spełnia wymagania?</label>
+                {{ form2.summary_meet_requirements  }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.summary_requirements_explains.id_for_label }}">Jeżeli nie spełnia, dlaczego</label>
+                {{ form2.summary_requirements_explains }}
+            </div>
+        </div>
+
+
+     <input type="submit" value="dodaj" class="btn-primary"/>
+
+    </form>
+</section>
+
+
+{% endblock %}

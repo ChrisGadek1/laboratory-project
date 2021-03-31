@@ -56,7 +56,17 @@ class DeliveryWay(models.Model):
         return u'%s' % self.name
 
 
-class FormPart1(models.Model):
+class ResearchStatus(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "%s" % self.name
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+
+class Sampling(models.Model):
     number = models.IntegerField()
     code = models.CharField(max_length=100)
     WIJHARS = models.ForeignKey(WIJHARS, on_delete=models.PROTECT,blank=False)
@@ -72,9 +82,6 @@ class FormPart1(models.Model):
     control_type = models.ForeignKey(ControlType, on_delete=models.PROTECT)
     sampling_method = models.ForeignKey(MetodAndNorm, on_delete=models.PROTECT)
     type = models.ForeignKey(Type, on_delete=models.PROTECT)
-
-
-class FormPart2(models.Model):
     manufacturer_name = models.CharField(max_length=300)
     manufacturer_address = models.CharField(max_length=500)
     sample_getter1_name = models.CharField(max_length=50)
@@ -90,3 +97,20 @@ class FormPart2(models.Model):
     order_number = models.IntegerField()
     mechanism_name_and_symbol = models.TextField()
     sample_delivery = models.ForeignKey(DeliveryWay, on_delete=models.PROTECT)
+
+
+class Research(models.Model):
+    sampling = models.ForeignKey(Sampling, on_delete=models.PROTECT)
+    name = models.CharField(max_length=300)
+    marking = models.CharField(max_length=300)
+    nutritional_value = models.CharField(max_length=300)
+    specification = models.CharField(max_length=300)
+    ordinance = models.CharField(max_length=300)
+    samples_number = models.IntegerField()
+    result = models.IntegerField(max_length=300)
+    start_date = models.DateField()
+    completion_date = models.DateField()
+    status = models.ForeignKey(ResearchStatus, on_delete=models.PROTECT)
+    uncertainty = models.CharField(max_length=300)
+    summary_meet_requirements = models.BooleanField()
+    summary_requirements_explains = models.TextField()

@@ -25,13 +25,13 @@
         width: 220px;
     }
 
-    .sample-field-wrapper-form2{
+    .sample-field-wrapper-form1{
         margin: 15px 15px 30px 20%;
         display: block;
         width: 220px;
     }
 
-    .sample-field-wrapper > *, .sample-field-wrapper-form2 > *{
+    .sample-field-wrapper > *, .sample-field-wrapper-form1 > *{
         text-align: left;
         display: block;
         width: 100%;
@@ -177,77 +177,79 @@
         <div class="form-part-title"> Producent</div>
         <div class="form-inner-wrapper">
             <div class="sample-field-wrapper">
-                <label for="{{ form2.manufacturer_name.id_for_label }}">nazwa</label>
-                {{ form2.manufacturer_name }}
+                <label for="{{ form1.manufacturer_name.id_for_label }}">nazwa</label>
+                {{ form1.manufacturer_name }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form2.manufacturer_address.id_for_label }}">adres</label>
-                {{ form2.manufacturer_address }}
+                <label for="{{ form1.manufacturer_address.id_for_label }}">adres</label>
+                {{ form1.manufacturer_address }}
             </div>
         </div>
         <div class="form-part-title"> Pobierający próbki (dwie osoby)</div>
         <div class="form-inner-wrapper">
             <div id="bordered-div">
                 <div class="sample-field-wrapper">
-                    <label for="{{ form2.sample_getter1_name.id_for_label }}">imię</label>
-                    {{ form2.sample_getter1_name }}
+                    <label for="{{ form1.sample_getter1_name.id_for_label }}">imię</label>
+                    {{ form1.sample_getter1_name }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form2.sample_getter1_surname.id_for_label }}">nazwisko</label>
-                    {{ form2.sample_getter1_surname }}
+                    <label for="{{ form1.sample_getter1_surname.id_for_label }}">nazwisko</label>
+                    {{ form1.sample_getter1_surname }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form2.sample_getter1_position.id_for_label }}">stanowisko</label>
-                    {{ form2.sample_getter1_position }}
+                    <label for="{{ form1.sample_getter1_position.id_for_label }}">stanowisko</label>
+                    {{ form1.sample_getter1_position }}
                 </div>
             </div>
             <div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form2.sample_getter2_name.id_for_label }}">imię</label>
-                    {{ form2.sample_getter2_name }}
+                    <label for="{{ form1.sample_getter2_name.id_for_label }}">imię</label>
+                    {{ form1.sample_getter2_name }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form2.sample_getter2_surname.id_for_label }}">nazwisko</label>
-                    {{ form2.sample_getter2_surname }}
+                    <label for="{{ form1.sample_getter2_surname.id_for_label }}">nazwisko</label>
+                    {{ form1.sample_getter2_surname }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form2.sample_getter2_position.id_for_label }}">stanowisko</label>
-                    {{ form2.sample_getter2_position }}
+                    <label for="{{ form1.sample_getter2_position.id_for_label }}">stanowisko</label>
+                    {{ form1.sample_getter2_position }}
                 </div>
             </div>
         </div>
-        <div class="sample-field-wrapper-form2">
-            <label for="{{ form2.manufacturer.id_for_label }}">dostawca/sprzedawca</label>
-            {{ form2.manufacturer }}
+        <div class="sample-field-wrapper-form1">
+            <label for="{{ form1.manufacturer.id_for_label }}">dostawca/sprzedawca</label>
+            {{ form1.manufacturer }}
         </div>
         <div class="form-part-title">Odbiorca</div>
         <div class="form-inner-wrapper">
             <div class="sample-field-wrapper">
-                <label for="{{ form2.final_consumer.id_for_label }}">konsument finalny</label>
-                {{ form2.final_consumer }}
+                <label for="{{ form1.final_consumer.id_for_label }}">konsument finalny</label>
+                {{ form1.final_consumer }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form2.consumer_name.id_for_label }}">nazwa</label>
-                {{ form2.consumer_name }}
+                <label for="{{ form1.consumer_name.id_for_label }}">nazwa</label>
+                {{ form1.consumer_name }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form2.consumer_address.id_for_label }}">adres</label>
-                {{ form2.consumer_address }}
+                <label for="{{ form1.consumer_address.id_for_label }}">adres</label>
+                {{ form1.consumer_address }}
             </div>
         </div>
-        <div class="sample-field-wrapper-form2">
-            <label for="{{ form2.order_number.id_for_label }}">numer zlecenia</label>
-            {{ form2.order_number }}
+        <div class="sample-field-wrapper-form1">
+            <label for="{{ form1.order_number.id_for_label }}">numer zlecenia</label>
+            {{ form1.order_number }}
         </div>
-        <div class="sample-field-wrapper-form2">
-            <label for="{{ form2.mechanism_name_and_symbol.id_for_label }}">nazwa i symbol mechanizmu</label>
-            {{ form2.manufacturer }}
+        <div class="sample-field-wrapper-form1">
+            <label for="{{ form1.mechanism_name_and_symbol.id_for_label }}">nazwa i symbol mechanizmu</label>
+            {{ form1.manufacturer }}
         </div>
-        <div class="sample-field-wrapper-form2">
-            <label for="{{ form2.sample_delivery.id_for_label }}">sposób dostarczenia próbki</label>
-            {{ form2.sample_delivery }}
+        <div class="sample-field-wrapper-form1">
+            <label for="{{ form1.sample_delivery.id_for_label }}">sposób dostarczenia próbki</label>
+            {{ form1.sample_delivery }}
         </div>
+
         <input type="submit" value="dodaj" class="btn-primary"/>
+
     </form>
 </section>
 

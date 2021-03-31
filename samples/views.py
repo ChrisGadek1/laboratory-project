@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import SampleForm, FormPart2
+from .forms import SampleForm, ResearchForm
 # Create your views here.
 
 
@@ -17,7 +17,18 @@ def sample_add(request, *args, **kwargs):
 
     contex = {
         "form1" : SampleForm,
-        "form2" : FormPart2
     }
 
     return render(request, 'sample_add.html', contex)
+
+
+def research_add(request, *args, **kwargs):
+    form = SampleForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+
+    contex = {
+        "form2": ResearchForm,
+    }
+
+    return render(request, 'research_add.html', contex)
