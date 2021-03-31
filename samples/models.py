@@ -97,6 +97,14 @@ class Sampling(models.Model):
     order_number = models.IntegerField()
     mechanism_name_and_symbol = models.TextField()
     sample_delivery = models.ForeignKey(DeliveryWay, on_delete=models.PROTECT)
+    is_OK = models.CharField(max_length=3, choices=[('YES', 'Tak'), ('NO', 'Nie')])
+    if_not_why = models.TextField(blank=True)
+
+    def __str__(self):
+        return "%s" % self.number
+
+    def __unicode__(self):
+        return u'%s' % self.number
 
 
 class Research(models.Model):
@@ -107,10 +115,10 @@ class Research(models.Model):
     specification = models.CharField(max_length=300)
     ordinance = models.CharField(max_length=300)
     samples_number = models.IntegerField()
-    result = models.IntegerField(max_length=300)
+    result = models.IntegerField()
     start_date = models.DateField()
     completion_date = models.DateField()
     status = models.ForeignKey(ResearchStatus, on_delete=models.PROTECT)
     uncertainty = models.CharField(max_length=300)
     summary_meet_requirements = models.BooleanField()
-    summary_requirements_explains = models.TextField()
+    summary_requirements_explains = models.TextField(blank=True)

@@ -16,7 +16,7 @@ class SampleForm(forms.ModelForm):
                   'manufacturer_name', 'manufacturer_address', 'sample_getter1_name', 'sample_getter1_surname',
                   'sample_getter1_position', 'sample_getter2_name', 'sample_getter2_surname',
                   'sample_getter2_position', 'manufacturer', 'final_consumer', 'consumer_name', 'consumer_address',
-                  'order_number', 'mechanism_name_and_symbol', 'sample_delivery')
+                  'order_number', 'mechanism_name_and_symbol', 'sample_delivery','is_OK','if_not_why')
         labels = {
             'number': _('Numer próbki'),
             'code': _('Kod próbki'),
@@ -47,7 +47,9 @@ class SampleForm(forms.ModelForm):
             'consumer_address': _('Address'),
             'order_number': _('Numer zlecenia'),
             'mechanism_name_and_symbol': _('Nazwa i symbol mechanizmu'),
-            'sample_delivery': _('Sposób dostarczenia próbki')
+            'sample_delivery': _('Sposób dostarczenia próbki'),
+            'is_OK': _('Czy próbka spełnia wymagania?'),
+            'if_not_why': _('Jeżeli nie, dlaczego')
         }
         widgets = {
             'code': forms.TextInput(attrs={'placeholder': 'test placeholdera'}),
@@ -77,4 +79,9 @@ class ResearchForm(forms.ModelForm):
             'uncertainty': _('Niepewność, LOD, LOQ'),
             'summary_meet_requirements': _('Czy próbka spełnia wymagania?'),
             'summary_requirements_explains': _('Jeżeli nie spełnia, dlaczego')
+        }
+
+        widgets = {
+            'start_date': DateInput,
+            'completion_date': DateInput,
         }

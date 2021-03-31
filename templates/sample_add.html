@@ -69,7 +69,7 @@
     }
 
 
-    #divider{
+    .divider{
         width: 90%;
         height: 3px;
         background-color: #2b29ff;
@@ -93,6 +93,10 @@
 
     .form-inner-wrapper > #bordered-div{
         border-bottom: #2b29ff 1px solid;
+    }
+
+    .submit-button{
+        font-size: 24px;
     }
 
     </style>
@@ -172,7 +176,7 @@
             </div>
         </div>
 
-        <div id="divider"></div>
+        <div class="divider"></div>
         <div class="form-part-desc">2. Dane z protokołu przyjęcia</div>
         <div class="form-part-title"> Producent</div>
         <div class="form-inner-wrapper">
@@ -241,13 +245,23 @@
         </div>
         <div class="sample-field-wrapper-form2">
             <label for="{{ form1.mechanism_name_and_symbol.id_for_label }}">nazwa i symbol mechanizmu</label>
-            {{ form1.manufacturer }}
+            {{ form1.mechanism_name_and_symbol }}
         </div>
         <div class="sample-field-wrapper-form2">
             <label for="{{ form1.sample_delivery.id_for_label }}">sposób dostarczenia próbki</label>
             {{ form1.sample_delivery }}
         </div>
-        <input type="submit" value="dodaj" class="btn-primary"/>
+        <div class="divider"></div>
+        <div class="form-part-desc">3. Podsumowanie</div>
+        <div class="sample-field-wrapper-form2">
+            <label for="{{ form1.is_OK.id_for_label }}">Czy próbka spełnia wymagania?</label>
+            {{ form1.is_OK }}
+        </div>
+        <div class="sample-field-wrapper-form2">
+            <label for="{{ form1.if_not_why.id_for_label }}">Jeżeli nie, dlaczego</label>
+            {{ form1.if_not_why }}
+        </div>
+        <input type="submit" value="dodaj" class="btn-primary submit-button"/>
     </form>
 </section>
 

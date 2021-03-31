@@ -17,9 +17,9 @@
 
         {% if user.is_authenticated %}
             <p id="user-name" class="badge badge-primary">{{  user.username }}</p>
-            <button id="login-button" class="btn-primary" onclick="location.href = 'accounts/logout'">Logout</button>
+            <button id="login-button" class="btn-primary" onclick="location.href = 'http://127.0.0.1:8000/accounts/logout'">Logout</button>
         {% else %}
-            <button id="login-button" class="btn-primary" onclick="location.href = 'accounts/login';">Login</button>
+            <button id="login-button" class="btn-primary" onclick="location.href = 'http://127.0.0.1:8000/accounts/login';">Login</button>
         {% endif %}
         {% block nav %}
         {% endblock %}
