@@ -25,13 +25,13 @@
         width: 220px;
     }
 
-    .sample-field-wrapper-form1{
+    .sample-field-wrapper-form2{
         margin: 15px 15px 30px 20%;
         display: block;
         width: 220px;
     }
 
-    .sample-field-wrapper > *, .sample-field-wrapper-form1 > *{
+    .sample-field-wrapper > *, .sample-field-wrapper-form2 > *{
         text-align: left;
         display: block;
         width: 100%;
@@ -216,7 +216,7 @@
                 </div>
             </div>
         </div>
-        <div class="sample-field-wrapper-form1">
+        <div class="sample-field-wrapper-form2">
             <label for="{{ form1.manufacturer.id_for_label }}">dostawca/sprzedawca</label>
             {{ form1.manufacturer }}
         </div>
@@ -235,21 +235,19 @@
                 {{ form1.consumer_address }}
             </div>
         </div>
-        <div class="sample-field-wrapper-form1">
+        <div class="sample-field-wrapper-form2">
             <label for="{{ form1.order_number.id_for_label }}">numer zlecenia</label>
             {{ form1.order_number }}
         </div>
-        <div class="sample-field-wrapper-form1">
+        <div class="sample-field-wrapper-form2">
             <label for="{{ form1.mechanism_name_and_symbol.id_for_label }}">nazwa i symbol mechanizmu</label>
             {{ form1.manufacturer }}
         </div>
-        <div class="sample-field-wrapper-form1">
+        <div class="sample-field-wrapper-form2">
             <label for="{{ form1.sample_delivery.id_for_label }}">sposób dostarczenia próbki</label>
             {{ form1.sample_delivery }}
         </div>
-
         <input type="submit" value="dodaj" class="btn-primary"/>
-
     </form>
 </section>
 

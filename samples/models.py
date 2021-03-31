@@ -77,7 +77,7 @@ class Sampling(models.Model):
     additional_comment = models.CharField(max_length=100)
     customer_name = models.CharField(max_length=100)
     size = models.CharField(max_length=100)
-    condition = models.CharField(max_length=100,default = "Bez zastrzeżeń")
+    condition = models.CharField(max_length=100,default="Bez zastrzeżeń")
     appeal_analysis = models.BooleanField(default=False)
     control_type = models.ForeignKey(ControlType, on_delete=models.PROTECT)
     sampling_method = models.ForeignKey(MetodAndNorm, on_delete=models.PROTECT)
