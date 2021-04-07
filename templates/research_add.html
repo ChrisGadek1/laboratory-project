@@ -104,11 +104,75 @@
     <form class="login_container" method="POST"> {% csrf_token %}
 
 
+        <div class="form-part-desc"> 0. Wybór trybu </div>
+        <div class="sample-field-wrapper" onchange="mode_change()">
+            <label for="{{ form0.mode_name.id_for_label }}" >Tryb formularza </label>
+            {{ form0.mode_name }}
+        </div>
+        <div class="sample-field-wrapper">
+            <label for="name_searching">Nazwa badania </label>
+            <input type="text" name="name_searching" maxlength="300" required="" id="id_name_searching" disabled="">
+        </div>
+        <input id="get_data_to_form" type="button" name="mode" value="Pobierz dane do formularza" onclick="getData()" class="btn-primary submit-button">
+        <input type="reset" name="reset" value="Resetuj formularz" class="btn-primary submit-button">
+
+        <script>
+            function getData() {
+                if(document.getElementById("id_name_searching").value !== "Add") {
+                    let csrfValue = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                    fetch("/research_add/", {
+                        method: "Post",
+                        headers: {
+                            "X-CSRFToken": csrfValue,
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                        body: document.getElementById("id_name_searching").value
+
+                    }).then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                        for (var x in data) {
+                            console.log(x + " : " + data[x])
+                            if (document.getElementById("id_" + x))
+                                document.getElementById("id_" + x).value = data[x];
+                        }
+                        document.getElementById("id_summary_meet_requirements").checked = data["summary_meet_requirements"];
+                    }).catch((error) => {
+                        console.error("Error", error);
+                    })
+                }
+            }
+
+            document.getElementById("id_name_searching").disabled = true;
+            document.getElementById("get_data_to_form").disabled = true;
+            document.getElementById("get_data_to_form").className = "submit-button-disabled";
+
+            function mode_change(){
+                var text = document.getElementById("id_mode_name").value;
+                console.log(text)
+                if(text === "Add"){
+                    document.getElementById("id_name_searching").innerText = '';
+                    document.getElementById("id_name_searching").disabled = true;
+                    document.getElementById("get_data_to_form").disabled = true;
+                    document.getElementById("get_data_to_form").className = "submit-button-disabled";
+                }
+                else {
+                    document.getElementById("id_name_searching").disabled = false;
+                    document.getElementById("get_data_to_form").disabled = false;
+                    document.getElementById("get_data_to_form").className = "btn-primary submit-button";
+                }
+            }
+
+        </script>
+
+        <div class="divider"></div>
+
+
         <div id="divider"></div>
         <div class="form-part-desc">1. Informacje o próbce </div>
         <div class="form-inner-wrapper">
             <div class="sample-field-wrapper">
-                <label for="{{ form2.sampling.id_for_label }}">Numer próbki </label>
+                <label for="{{ form2.sampling.id_for_label }}">Kod próbki </label>
                 {{ form2.sampling  }}
             </div>
         </div>
@@ -183,7 +247,7 @@
         </div>
 
 
-     <input type="submit" value="dodaj" class="btn-primary"/>
+     <input type="submit" value="zatwierdź" class="btn-primary"/>
 
     </form>
 </section>

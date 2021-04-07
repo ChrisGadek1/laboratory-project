@@ -104,7 +104,73 @@
 
 {% block content %}
 <section id="sample-form">
-    <form class="login_container" method="POST"> {% csrf_token %}
+    <form id="add_sample" class="login_container" method="POST"> {% csrf_token %}
+
+        <div class="form-part-desc"> 0. Wybór trybu </div>
+        <div class="sample-field-wrapper" onchange="mode_change()">
+            <label for="{{ form0.mode_name.id_for_label }}" >Tryb formularza </label>
+            {{ form0.mode_name }}
+        </div>
+        <div class="sample-field-wrapper">
+            <label for="{{ form2.sampling.id_for_label }}">Numer próbki </label>
+                {{ form2.sampling  }}
+        </div>
+        <input id="get_data_to_form" type="button" name="mode" value="Pobierz dane do formularza" onclick="getData()" class="btn-primary submit-button">
+        <input type="reset" name="reset" value="Resetuj formularz" class="btn-primary submit-button">
+
+        <script>
+            function getData() {
+                if(document.getElementById("id_mode_name").value !== "Add") {
+                    console.log(document.getElementById("id_sampling").value)
+
+                    let csrfValue = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                    fetch("/sample_add/", {
+                        method: "Post",
+                        headers: {
+                            "X-CSRFToken": csrfValue,
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                        body: document.getElementById("id_sampling").value,
+
+                    }).then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                        for (var x in data) {
+                            if (document.getElementById("id_" + x))
+                                document.getElementById("id_" + x).value = data[x];
+                        }
+                        document.getElementById("id_" + "appeal_analysis").checked = data["appeal_analysis"];
+                        document.getElementById("id_" + "final_consumer").checked = data["final_consumer"];
+                    }).catch((error) => {
+                        console.error("Error", error);
+                    })
+                }
+            }
+
+            document.getElementById("id_sampling").disabled = true;
+            document.getElementById("get_data_to_form").disabled = true;
+            document.getElementById("get_data_to_form").className = "submit-button-disabled";
+
+            function mode_change(){
+                var text = document.getElementById("id_mode_name").value;
+                console.log(text)
+                if(text === "Add"){
+                    document.getElementById("id_sampling").selectedIndex = 0;
+                    document.getElementById("id_sampling").disabled = true;
+                    document.getElementById("get_data_to_form").disabled = true;
+                    document.getElementById("get_data_to_form").className = "submit-button-disabled";
+                }
+                else {
+                    document.getElementById("id_sampling").disabled = false;
+                    document.getElementById("get_data_to_form").disabled = false;
+                    document.getElementById("get_data_to_form").className = "btn-primary submit-button";
+                }
+            }
+
+        </script>
+
+        <div class="divider"></div>
+
         <div class="form-part-desc">1. Dane o Próbce</div>
         <div class="sample-field-wrapper">
             <label for="{{ form1.number.id_for_label }}">numer próbki</label>
@@ -261,7 +327,7 @@
             <label for="{{ form1.if_not_why.id_for_label }}">Jeżeli nie, dlaczego</label>
             {{ form1.if_not_why }}
         </div>
-        <input type="submit" value="dodaj" class="btn-primary submit-button"/>
+        <input type="submit" value="zatwierdź" class="btn-primary submit-button"/>
     </form>
 </section>
 

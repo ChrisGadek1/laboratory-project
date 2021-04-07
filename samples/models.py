@@ -3,8 +3,8 @@ from django.db import models
 
 from datetime import date
 
-#from app import forms
 
+# from app import forms
 
 class WIJHARS(models.Model):
     name = models.CharField(max_length=100)
@@ -69,7 +69,7 @@ class ResearchStatus(models.Model):
 class Sampling(models.Model):
     number = models.IntegerField()
     code = models.CharField(max_length=100)
-    WIJHARS = models.ForeignKey(WIJHARS, on_delete=models.PROTECT,blank=False)
+    WIJHARS = models.ForeignKey(WIJHARS, on_delete=models.PROTECT, blank=False)
     assortment = models.TextField()
     admission_date = models.DateField(default=date.today)
     expiration_date = models.DateField()
@@ -77,7 +77,7 @@ class Sampling(models.Model):
     additional_comment = models.CharField(max_length=100)
     customer_name = models.CharField(max_length=100)
     size = models.CharField(max_length=100)
-    condition = models.CharField(max_length=100,default="Bez zastrzeżeń")
+    condition = models.CharField(max_length=100, default="Bez zastrzeżeń")
     appeal_analysis = models.BooleanField(default=False)
     control_type = models.ForeignKey(ControlType, on_delete=models.PROTECT)
     sampling_method = models.ForeignKey(MetodAndNorm, on_delete=models.PROTECT)
@@ -85,7 +85,7 @@ class Sampling(models.Model):
     manufacturer_name = models.CharField(max_length=300)
     manufacturer_address = models.CharField(max_length=500)
     sample_getter1_name = models.CharField(max_length=50)
-    sample_getter1_surname = models.CharField(max_length=100) #dane osób pobierających próbki
+    sample_getter1_surname = models.CharField(max_length=100)  # dane osób pobierających próbki
     sample_getter1_position = models.CharField(max_length=100)
     sample_getter2_name = models.CharField(max_length=50)
     sample_getter2_surname = models.CharField(max_length=100)
@@ -122,3 +122,7 @@ class Research(models.Model):
     uncertainty = models.CharField(max_length=300)
     summary_meet_requirements = models.BooleanField()
     summary_requirements_explains = models.TextField(blank=True)
+
+
+class Mode(models.Model):
+    mode_name = models.CharField(max_length=10, choices=[('Add', 'Dodaj'), ('Edit', 'Modyfikuj'), ('Delete', 'Usuń')],default='Add')

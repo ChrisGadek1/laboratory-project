@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from .models import Sampling, Research
+from .models import Sampling, Research, Mode
 from django import forms
 
 
@@ -8,15 +8,19 @@ class DateInput(forms.DateInput):
     input_formats = ('%Y-%m-%d')
 
 
+class ChoiceAction(forms.ModelForm):
+    class Meta:
+        model = Mode
+        fields = ('mode_name',)
+        labels = {
+            'mode_name': _('Co chcesz zrobić z próbką'),
+        }
+
+
 class SampleForm(forms.ModelForm):
     class Meta:
         model = Sampling
-        fields = ('number','code','WIJHARS','assortment','admission_date','completion_date', 'expiration_date','additional_comment',
-                  'customer_name','size','condition','appeal_analysis','control_type','type','sampling_method',
-                  'manufacturer_name', 'manufacturer_address', 'sample_getter1_name', 'sample_getter1_surname',
-                  'sample_getter1_position', 'sample_getter2_name', 'sample_getter2_surname',
-                  'sample_getter2_position', 'manufacturer', 'final_consumer', 'consumer_name', 'consumer_address',
-                  'order_number', 'mechanism_name_and_symbol', 'sample_delivery','is_OK','if_not_why')
+        fields = ('__all__')
         labels = {
             'number': _('Numer próbki'),
             'code': _('Kod próbki'),
@@ -62,8 +66,7 @@ class SampleForm(forms.ModelForm):
 class ResearchForm(forms.ModelForm):
     class Meta:
         model = Research
-        fields = ('sampling','name', 'marking','nutritional_value','specification','ordinance','samples_number','result',
-                  'start_date','completion_date','status','uncertainty','summary_meet_requirements', 'summary_requirements_explains')
+        fields = ('__all__')
         labels = {
             'sampling': _('Numer próbki'),
             'name': _('Nazwa'),
