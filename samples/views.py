@@ -1,8 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
-from .forms import SampleForm, ResearchForm, ChoiceAction
+from .forms import SampleForm, ResearchForm, ChoiceAction, FindResearch
 from .models import Sampling, Research
+from django.contrib import messages
 
 # Create your views here.
 
@@ -15,33 +16,34 @@ def main_site(request, *args, **kwargs):
 
 
 def sample_add(request, *args, **kwargs):
-    form = SampleForm(request.POST)
     form2 = ChoiceAction(request.POST)
     form3 = ResearchForm(request.POST)
+    form = SampleForm(data=request.POST, mode=form2["mode_name"].value())
 
     if not request.is_ajax():
-        if form.is_valid():
-            if form2['mode_name'].value() == "Add":
-                form.save()
-            elif form2['mode_name'].value() == "Edit":
-                obj = Sampling.objects.get(id=form3['sampling'].value())
-                form = SampleForm(request.POST, instance=obj)
-                form.save()
+        if request.method == 'POST':
+            if form.is_valid():
+                if form2['mode_name'].value() == "Add":
+                    form.save()
+                elif form2['mode_name'].value() == "Edit":
+                    obj = Sampling.objects.get(number=form['number'].value())
+                    form = SampleForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
+                    form.save()
+                else:
+                    obj = Sampling.objects.get(number=form['number'].value())
+                    obj.delete()
             else:
-                obj = Sampling.objects.get(id=form3['sampling'].value())
-                obj.delete()
+                messages.error(request, form.errors)
 
     contex = {
-        "form0" : ChoiceAction,
-        "form1" : SampleForm,
-        "form2": ResearchForm,
+        "form0": form2,
+        "form1": form,
+        "form2": form3,
     }
 
     if request.is_ajax():
         idx = request.body.decode()
-        print(idx)
         obj = Sampling.objects.get(id=idx)
-        print(obj.number)
         return JsonResponse({
             'number': obj.number,
             'code': obj.code,
@@ -76,38 +78,42 @@ def sample_add(request, *args, **kwargs):
             'is_OK': obj.is_OK,
             'if_not_why': obj.if_not_why,
         }, status=200)
-    elif request.user.is_authenticated:
+
+    if request.user.is_authenticated:
         return render(request, 'sample_add.html', contex)
     else:
         return redirect('/')
 
 
 def research_add(request, *args, **kwargs):
-
-    form = ResearchForm(request.POST or None)
     form2 = ChoiceAction(request.POST)
+    form3 = FindResearch(request.POST)
+    form = ResearchForm(data=request.POST, mode=form2["mode_name"].value())
 
-    print(request.POST)
     if not request.is_ajax():
-        if form.is_valid():
-            if form2['mode_name'].value() == "Add":
-                form.save()
-            elif form2['mode_name'].value() == "Edit":
-                obj = Research.objects.get(name=request.POST['name_searching'])
-                form = ResearchForm(request.POST, instance=obj)
-                form.save()
+        if request.method == 'POST':
+            if form.is_valid():
+                if form2['mode_name'].value() == "Add":
+                    form.save()
+                elif form2['mode_name'].value() == "Edit":
+                    obj = Research.objects.get(name=form["name"].value())
+                    form = ResearchForm(mode=form2["mode_name"].value(), data=request.POST, instance=obj)
+                    form.save()
+                else:
+                    obj = Research.objects.get(name=form["name"].value())
+                    obj.delete()
             else:
-                obj = Research.objects.get(name=form['name_searching'])
-                obj.delete()
+                messages.error(request, form.errors)
 
     contex = {
-        "form0": ChoiceAction,
-        "form2": ResearchForm,
+        "form0": form2,
+        "form2": form,
+        "form3": form3
     }
 
     if request.is_ajax():
         idx = request.body.decode()
-        obj = Research.objects.get(name=idx)
+        obj = Research.objects.get(id=idx)
         return JsonResponse({
             'sampling': obj.sampling_id,
             'name': obj.name,

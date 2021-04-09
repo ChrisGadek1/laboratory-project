@@ -99,6 +99,17 @@
         font-size: 24px;
     }
 
+    #find-sample{
+        display: none;
+    }
+
+    #errors *{
+        list-style: none;
+        text-align: left;
+        color: red;
+        font-size: 20px;
+    }
+
     </style>
 {% endblock %}
 
@@ -111,15 +122,55 @@
             <label for="{{ form0.mode_name.id_for_label }}" >Tryb formularza </label>
             {{ form0.mode_name }}
         </div>
-        <div class="sample-field-wrapper">
-            <label for="{{ form2.sampling.id_for_label }}">Numer próbki </label>
+        <div class="sample-field-wrapper" id="find-sample">
+            <label for="{{ form1.code.id_for_label }}">Kod Próbki </label>
                 {{ form2.sampling  }}
         </div>
-        <input id="get_data_to_form" type="button" name="mode" value="Pobierz dane do formularza" onclick="getData()" class="btn-primary submit-button">
-        <input type="reset" name="reset" value="Resetuj formularz" class="btn-primary submit-button">
+        <input id="reset-form" type="reset" name="reset" onclick="resetForm()" value="Resetuj formularz" class="btn-primary submit-button">
 
         <script>
+            window.onload = function(){
+                mode_change();
+                setSubmitButtonText();
+                document.getElementById("id_mode_name").addEventListener("change", () => {
+                    setSubmitButtonText();
+                });
+                document.getElementById("find-sample").addEventListener("change", () => {
+                    getData();
+                })
+            }
+
+            function setSubmitButtonText() {
+                let text = document.getElementById("id_mode_name").value;
+                if(text == "Add"){
+                    document.getElementById("submit-button").value = "Dodaj";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return')")
+
+                }
+                else if(text == "Edit"){
+                    document.getElementById("submit-button").value = "Modyfikuj";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return confirm('Uwaga! modyfikując tą próbkę zmieniasz ją w bazie bezpowrotnie. Czy chcesz kontynuować?')")
+                }
+                else{
+                    document.getElementById("submit-button").value = "Usuń";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return confirm('Uwaga! Usuwanie danych z bazy jest bezpowrotne. Czy chcesz kontynuować?')")
+
+                }
+            }
+
+            function resetForm() {
+                document.getElementById("find-sample").style.display = "none";
+                document.getElementById("id_sampling").selectedIndex = 0;
+                document.getElementById("id_sampling").disabled = true;
+                document.getElementById("find-sample").style.display = "none";
+                document.getElementById("submit-button").value = "Dodaj";
+            }
+
             function getData() {
+                if(document.getElementById("id_sampling").value === ""){
+                    return;
+                }
+
                 if(document.getElementById("id_mode_name").value !== "Add") {
                     console.log(document.getElementById("id_sampling").value)
 
@@ -148,29 +199,37 @@
             }
 
             document.getElementById("id_sampling").disabled = true;
-            document.getElementById("get_data_to_form").disabled = true;
-            document.getElementById("get_data_to_form").className = "submit-button-disabled";
+
 
             function mode_change(){
                 var text = document.getElementById("id_mode_name").value;
                 console.log(text)
                 if(text === "Add"){
+                    document.getElementById("find-sample").style.display = "none";
                     document.getElementById("id_sampling").selectedIndex = 0;
                     document.getElementById("id_sampling").disabled = true;
-                    document.getElementById("get_data_to_form").disabled = true;
-                    document.getElementById("get_data_to_form").className = "submit-button-disabled";
                 }
                 else {
+                    document.getElementById("find-sample").style.display = "block";
                     document.getElementById("id_sampling").disabled = false;
-                    document.getElementById("get_data_to_form").disabled = false;
-                    document.getElementById("get_data_to_form").className = "btn-primary submit-button";
                 }
             }
 
+            {% if messages %}
+                alert("Wystąpiły błędy przy wypełnianiu formularza. Informacje będą podane na górze formularza")
+            {% endif %}
+
         </script>
+        {% if messages %}
+            <div id="errors">
+                <p id="error-p">Błędy w formularzu:</p>
+                {% for message in messages %}
+                    {{message}}
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <div class="divider"></div>
-
         <div class="form-part-desc">1. Dane o Próbce</div>
         <div class="sample-field-wrapper">
             <label for="{{ form1.number.id_for_label }}">numer próbki</label>
@@ -327,7 +386,7 @@
             <label for="{{ form1.if_not_why.id_for_label }}">Jeżeli nie, dlaczego</label>
             {{ form1.if_not_why }}
         </div>
-        <input type="submit" value="zatwierdź" class="btn-primary submit-button"/>
+        <input id="submit-button" type="submit" value="zatwierdź" class="btn-primary submit-button"/>
     </form>
 </section>
 

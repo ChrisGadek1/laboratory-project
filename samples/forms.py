@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from .models import Sampling, Research, Mode
+from .models import Sampling, Research, Mode, FindResearch
 from django import forms
 
 
@@ -18,9 +18,13 @@ class ChoiceAction(forms.ModelForm):
 
 
 class SampleForm(forms.ModelForm):
+    def __init__(self, mode, *args, **kwargs):
+        self.mode = mode
+        super(SampleForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Sampling
-        fields = ('__all__')
+        fields = '__all__'
         labels = {
             'number': _('Numer próbki'),
             'code': _('Kod próbki'),
@@ -56,14 +60,43 @@ class SampleForm(forms.ModelForm):
             'if_not_why': _('Jeżeli nie, dlaczego')
         }
         widgets = {
-            'code': forms.TextInput(attrs={'placeholder': 'test placeholdera'}),
+            'code': forms.TextInput(attrs={'placeholder': 'kod próbki'}),
             'admission_date' : DateInput,
             'expiration_date' : DateInput,
             'completion_date' : DateInput,
         }
 
+    def clean_number(self, *args, **kwargs):
+        if self.mode != "Add" and Sampling.objects.filter(number=self.cleaned_data.get("number")).count() == 0:
+            raise forms.ValidationError("nie istnieje próka o podanym numerze")
+        elif self.mode == "Add" and Sampling.objects.filter(number=self.cleaned_data.get("number")).count() > 0:
+            raise forms.ValidationError("istnieje już próbka o podanym numerze")
+        else:
+            return self.cleaned_data.get("number")
+
+    def clean_code(self, *args, **kwargs):
+        if self.mode != "Add" and Sampling.objects.filter(code=self.cleaned_data.get("code")).count() == 0:
+            raise forms.ValidationError("nie istnieje próka o podanym kodzie")
+        elif self.mode == "Add" and Sampling.objects.filter(code=self.cleaned_data.get("code")).count() > 0:
+            raise forms.ValidationError("istnieje już próbka o podanym kodzie")
+        else:
+            return self.cleaned_data.get("code")
+
+
+class FindResearch(forms.ModelForm):
+    class Meta:
+        model = FindResearch
+        fields = ('__all__')
+        labels = {
+            'research_name':_('Wybierz badanie')
+        }
+
 
 class ResearchForm(forms.ModelForm):
+    def __init__(self, mode, *args, **kwargs):
+        self.mode = mode
+        super(ResearchForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Research
         fields = ('__all__')
@@ -88,3 +121,11 @@ class ResearchForm(forms.ModelForm):
             'start_date': DateInput,
             'completion_date': DateInput,
         }
+
+    def clean_name(self, *args, **kwargs):
+        if self.mode == "Add" and Research.objects.filter(name=self.cleaned_data.get("name")).count() > 0:
+            raise forms.ValidationError("istnieje już badanie o podanej nazwie")
+        elif self.mode != "Add" and Research.objects.filter(name=self.cleaned_data.get("name")).count() == 0:
+            raise forms.ValidationError("nie istnieje badanie o podanej nazwie")
+        else:
+            return self.cleaned_data.get("name")

@@ -95,13 +95,20 @@
         border-bottom: #2b29ff 1px solid;
     }
 
+     #errors *{
+        list-style: none;
+        text-align: left;
+        color: red;
+        font-size: 20px;
+    }
+
     </style>
 {% endblock %}
 
 
 {% block content %}
 <section id="sample-form">
-    <form class="login_container" method="POST"> {% csrf_token %}
+    <form id="add_sample" class="login_container" method="POST"> {% csrf_token %}
 
 
         <div class="form-part-desc"> 0. Wybór trybu </div>
@@ -109,24 +116,35 @@
             <label for="{{ form0.mode_name.id_for_label }}" >Tryb formularza </label>
             {{ form0.mode_name }}
         </div>
-        <div class="sample-field-wrapper">
-            <label for="name_searching">Nazwa badania </label>
-            <input type="text" name="name_searching" maxlength="300" required="" id="id_name_searching" disabled="">
+        <div class="sample-field-wrapper" id="find-research">
+            <label for="{{ form3.research_name.id_for_label }}">Nazwa badania </label>
+            {{ form3.research_name }}
         </div>
-        <input id="get_data_to_form" type="button" name="mode" value="Pobierz dane do formularza" onclick="getData()" class="btn-primary submit-button">
-        <input type="reset" name="reset" value="Resetuj formularz" class="btn-primary submit-button">
+        <input type="reset" name="reset" onclick="resetForm()" value="Resetuj formularz" class="btn-primary submit-button">
 
         <script>
+            window.onload = function(){
+                mode_change();
+                setSubmitButtonText();
+                document.getElementById("id_mode_name").addEventListener("change", () => {
+                    setSubmitButtonText();
+                });
+                document.getElementById("find-research").addEventListener("change", () => {
+                    getData();
+                })
+            }
+
             function getData() {
-                if(document.getElementById("id_name_searching").value !== "Add") {
+                if(document.getElementById("id_mode_name").value !== "Add") {
                     let csrfValue = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                    console.log(document.getElementById("id_name").value)
                     fetch("/research_add/", {
                         method: "Post",
                         headers: {
                             "X-CSRFToken": csrfValue,
                             "X-Requested-With": "XMLHttpRequest",
                         },
-                        body: document.getElementById("id_name_searching").value
+                        body: document.getElementById("id_research_name").value
 
                     }).then(function (response) {
                         return response.json();
@@ -143,31 +161,57 @@
                 }
             }
 
-            document.getElementById("id_name_searching").disabled = true;
-            document.getElementById("get_data_to_form").disabled = true;
-            document.getElementById("get_data_to_form").className = "submit-button-disabled";
-
             function mode_change(){
                 var text = document.getElementById("id_mode_name").value;
                 console.log(text)
                 if(text === "Add"){
-                    document.getElementById("id_name_searching").innerText = '';
-                    document.getElementById("id_name_searching").disabled = true;
-                    document.getElementById("get_data_to_form").disabled = true;
-                    document.getElementById("get_data_to_form").className = "submit-button-disabled";
+                    document.getElementById("find-research").style.display = "none";
                 }
                 else {
-                    document.getElementById("id_name_searching").disabled = false;
-                    document.getElementById("get_data_to_form").disabled = false;
-                    document.getElementById("get_data_to_form").className = "btn-primary submit-button";
+                    document.getElementById("find-research").style.display = "block";
                 }
             }
 
+
+            function setSubmitButtonText() {
+                let text = document.getElementById("id_mode_name").value;
+                if(text == "Add"){
+                    document.getElementById("submit-button").value = "Dodaj";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return")
+
+                }
+                else if(text == "Edit"){
+                    document.getElementById("submit-button").value = "Modyfikuj";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return confirm('Uwaga! modyfikując to badanie zmieniasz je w bazie bezpowrotnie. Czy chcesz kontynuować?')")
+                }
+                else{
+                    document.getElementById("submit-button").value = "Usuń";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return confirm('Uwaga! Usuwanie danych z bazy jest bezpowrotne. Czy chcesz kontynuować?')")
+
+                }
+            }
+
+            function resetForm() {
+                document.getElementById("get_data_to_form").style.display = "none";
+                document.getElementById("submit-button").value = "Dodaj";
+                document.getElementById("find-research").style.display = "none";
+            }
+
+            {% if messages %}
+                alert("Wystąpiły błędy przy wypełnianiu formularza. Informacje będą podane na górze formularza")
+            {% endif %}
+
         </script>
 
+        {% if messages %}
+            <div id="errors">
+                <p id="error-p">Błędy w formularzu:</p>
+                {% for message in messages %}
+                    {{message}}
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="divider"></div>
-
-
         <div id="divider"></div>
         <div class="form-part-desc">1. Informacje o próbce </div>
         <div class="form-inner-wrapper">
@@ -232,7 +276,6 @@
             </div>
         </div>
 
-
         <div id="divider"></div>
         <div class="form-part-desc">3. Podsumowanie </div>
         <div class="form-inner-wrapper">
@@ -246,8 +289,7 @@
             </div>
         </div>
 
-
-     <input type="submit" value="zatwierdź" class="btn-primary"/>
+        <input type="submit" id="submit-button" value="zatwierdź" class="btn-primary"/>
 
     </form>
 </section>

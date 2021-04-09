@@ -101,10 +101,10 @@ class Sampling(models.Model):
     if_not_why = models.TextField(blank=True)
 
     def __str__(self):
-        return "%s" % self.number
+        return "%s" % self.code
 
     def __unicode__(self):
-        return u'%s' % self.number
+        return u'%s' % self.code
 
 
 class Research(models.Model):
@@ -122,6 +122,22 @@ class Research(models.Model):
     uncertainty = models.CharField(max_length=300)
     summary_meet_requirements = models.BooleanField()
     summary_requirements_explains = models.TextField(blank=True)
+
+    def __str__(self):
+        return "%s" % self.name
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+
+class FindResearch(models.Model):
+    research_name = models.ForeignKey(Research, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "%s" % self.research_name
+
+    def __unicode__(self):
+        return u'%s' % self.research_name
 
 
 class Mode(models.Model):
