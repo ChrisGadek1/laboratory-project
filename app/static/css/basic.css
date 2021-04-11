@@ -20,6 +20,15 @@ body{
     border-radius: 5px;
 }
 
+#login-button2{
+    position: fixed;
+    top: 10px;
+    right: 130px;
+    font-size: 20px;
+    text-align: right;
+    border-radius: 5px;
+}
+
 #main-block{
     margin-top: 60px;
 }

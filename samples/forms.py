@@ -13,7 +13,7 @@ class ChoiceAction(forms.ModelForm):
         model = Mode
         fields = ('mode_name',)
         labels = {
-            'mode_name': _('Co chcesz zrobić z próbką'),
+            'mode_name': _('Tryb formularza'),
         }
 
 
@@ -101,7 +101,7 @@ class ResearchForm(forms.ModelForm):
         model = Research
         fields = ('__all__')
         labels = {
-            'sampling': _('Numer próbki'),
+            'sampling': _('Kod próbki'),
             'name': _('Nazwa'),
             'marking': _('Oznakowanie'),
             'nutritional_value': _('Wartość odżywcza'),

@@ -119,11 +119,11 @@
 
         <div class="form-part-desc"> 0. Wybór trybu </div>
         <div class="sample-field-wrapper" onchange="mode_change()">
-            <label for="{{ form0.mode_name.id_for_label }}" >Tryb formularza </label>
+            <label for="{{ form0.mode_name.id_for_label }}" > {{ form0.mode_name.label }} </label>
             {{ form0.mode_name }}
         </div>
         <div class="sample-field-wrapper" id="find-sample">
-            <label for="{{ form1.code.id_for_label }}">Kod Próbki </label>
+            <label for="{{ form2.sampling.id_for_label }}">{{ form2.sampling.label }} </label>
                 {{ form2.sampling  }}
         </div>
         <input id="reset-form" type="reset" name="reset" onclick="resetForm()" value="Resetuj formularz" class="btn-primary submit-button">
@@ -219,6 +219,14 @@
                 alert("Wystąpiły błędy przy wypełnianiu formularza. Informacje będą podane na górze formularza")
             {% endif %}
 
+            {% if action == 'Add' %}
+                alert("Dodano próbkę")
+            {% elif action == 'Edit' %}
+                alert("Zmodyfikowano próbkę")
+            {% elif action == 'Delete' %}
+                alert("Usunięto próbkę")
+            {% endif %}
+
         </script>
         {% if messages %}
             <div id="errors">
@@ -232,70 +240,70 @@
         <div class="divider"></div>
         <div class="form-part-desc">1. Dane o Próbce</div>
         <div class="sample-field-wrapper">
-            <label for="{{ form1.number.id_for_label }}">numer próbki</label>
+            <label for="{{ form1.number.id_for_label }}"> {{ form1.number.label }} </label>
             {{ form1.number }}
         </div>
         <div class="sample-field-wrapper">
-            <label for="{{ form1.code.id_for_label }}">kod próbki</label>
+            <label for="{{ form1.code.id_for_label }}"> {{ form1.code.label }} </label>
             {{ form1.code }}
         </div>
         <div class="sample-field-wrapper">
-            <label for="{{ form1.WIJHARS.id_for_label }}">WIJHARS</label>
+            <label for="{{ form1.WIJHARS.id_for_label }}">{{ form1.WIJHARS.label }} </label>
             {{ form1.WIJHARS }}
         </div>
         <div class="sample-field-wrapper">
-            <label for="{{ form1.assortment.id_for_label }}">asortyment</label>
+            <label for="{{ form1.assortment.id_for_label }}"> {{ form1.assortment.label }} </label>
             {{ form1.assortment }}
         </div>
         <div id="sample-dates-form">
             <div class="sample-field-wrapper">
-                <label for="{{ form1.admission_date.id_for_label }}">data pobrania</label>
+                <label for="{{ form1.admission_date.id_for_label }}"> {{ form1.admission_date.label }} </label>
                 {{ form1.admission_date }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form1.expiration_date.id_for_label }}">data przydatności</label>
+                <label for="{{ form1.expiration_date.id_for_label }}"> {{ form1.expiration_date.label }} </label>
                 {{ form1.expiration_date }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form1.completion_date.id_for_label }}">data zakończenia badań</label>
+                <label for="{{ form1.completion_date.id_for_label }}"> {{ form1.completion_date.label }} </label>
                 {{ form1.completion_date }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form1.additional_comment.id_for_label }}">dodatkowy komentarz</label>
+                <label for="{{ form1.additional_comment.id_for_label }}"> {{ form1.additional_comment.label }} </label>
                 {{ form1.additional_comment }}
             </div>
         </div>
         <div id="form1-last-part">
             <div class="form1-last-part-inner">
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.customer_name.id_for_label }}">nazwa klienta</label>
+                    <label for="{{ form1.customer_name.id_for_label }}"> {{ form1.customer_name.label }} </label>
                     {{ form1.customer_name }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.size.id_for_label }}">wielkość próbki</label>
+                    <label for="{{ form1.size.id_for_label }}"> {{ form1.size.label }} </label>
                     {{ form1.size }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.condition.id_for_label }}">stan próbki</label>
+                    <label for="{{ form1.condition.id_for_label }}"> {{ form1.condition.label }} </label>
                     {{ form1.condition }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.appeal_analysis.id_for_label }}">analiza odwoławcza</label>
+                    <label for="{{ form1.appeal_analysis.id_for_label }}"> {{ form1.appeal_analysis.label }} </label>
                     {{ form1.appeal_analysis }}
                 </div>
             </div>
             <div id="divider-form1-inner"></div>
             <div class="form1-last-part-inner">
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.control_type.id_for_label }}">rodzaj kontroli</label>
+                    <label for="{{ form1.control_type.id_for_label }}"> {{ form1.control_type.label }} </label>
                     {{ form1.control_type }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.sampling_method.id_for_label }}">metoda/norma pobrania</label>
+                    <label for="{{ form1.sampling_method.id_for_label }}">{{ form1.sampling_method.label }} </label>
                     {{ form1.sampling_method }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.type.id_for_label }}">rodzaj próbki</label>
+                    <label for="{{ form1.type.id_for_label }}"> {{ form1.type.label }} </label>
                     {{ form1.type }}
                 </div>
             </div>
@@ -306,11 +314,11 @@
         <div class="form-part-title"> Producent</div>
         <div class="form-inner-wrapper">
             <div class="sample-field-wrapper">
-                <label for="{{ form1.manufacturer_name.id_for_label }}">nazwa</label>
+                <label for="{{ form1.manufacturer_name.id_for_label }}"> {{ form1.manufacturer_name.label }} </label>
                 {{ form1.manufacturer_name }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form1.manufacturer_address.id_for_label }}">adres</label>
+                <label for="{{ form1.manufacturer_address.id_for_label }}"> {{ form1.manufacturer_address.label }} </label>
                 {{ form1.manufacturer_address }}
             </div>
         </div>
@@ -318,72 +326,72 @@
         <div class="form-inner-wrapper">
             <div id="bordered-div">
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.sample_getter1_name.id_for_label }}">imię</label>
+                    <label for="{{ form1.sample_getter1_name.id_for_label }}"> {{ form1.sample_getter1_name.label }} </label>
                     {{ form1.sample_getter1_name }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.sample_getter1_surname.id_for_label }}">nazwisko</label>
+                    <label for="{{ form1.sample_getter1_surname.id_for_label }}"> {{ form1.sample_getter1_surname.label }} </label>
                     {{ form1.sample_getter1_surname }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.sample_getter1_position.id_for_label }}">stanowisko</label>
+                    <label for="{{ form1.sample_getter1_position.id_for_label }}"> {{ form1.sample_getter1_position.label }} </label>
                     {{ form1.sample_getter1_position }}
                 </div>
             </div>
             <div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.sample_getter2_name.id_for_label }}">imię</label>
+                    <label for="{{ form1.sample_getter2_name.id_for_label }}"> {{ form1.sample_getter2_name.label }}</label>
                     {{ form1.sample_getter2_name }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.sample_getter2_surname.id_for_label }}">nazwisko</label>
+                    <label for="{{ form1.sample_getter2_surname.id_for_label }}"> {{ form1.sample_getter2_surname.label }} </label>
                     {{ form1.sample_getter2_surname }}
                 </div>
                 <div class="sample-field-wrapper">
-                    <label for="{{ form1.sample_getter2_position.id_for_label }}">stanowisko</label>
+                    <label for="{{ form1.sample_getter2_position.id_for_label }}"> {{ form1.sample_getter2_position.label }} </label>
                     {{ form1.sample_getter2_position }}
                 </div>
             </div>
         </div>
         <div class="sample-field-wrapper-form2">
-            <label for="{{ form1.manufacturer.id_for_label }}">dostawca/sprzedawca</label>
+            <label for="{{ form1.manufacturer.id_for_label }}"> {{ form1.manufacturer.label }} </label>
             {{ form1.manufacturer }}
         </div>
         <div class="form-part-title">Odbiorca</div>
         <div class="form-inner-wrapper">
             <div class="sample-field-wrapper">
-                <label for="{{ form1.final_consumer.id_for_label }}">konsument finalny</label>
+                <label for="{{ form1.final_consumer.id_for_label }}"> {{ form1.final_consumer.label }} </label>
                 {{ form1.final_consumer }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form1.consumer_name.id_for_label }}">nazwa</label>
+                <label for="{{ form1.consumer_name.id_for_label }}"> {{ form1.consumer_name.label }} </label>
                 {{ form1.consumer_name }}
             </div>
             <div class="sample-field-wrapper">
-                <label for="{{ form1.consumer_address.id_for_label }}">adres</label>
+                <label for="{{ form1.consumer_address.id_for_label }}"> {{ form1.consumer_address.label }} </label>
                 {{ form1.consumer_address }}
             </div>
         </div>
         <div class="sample-field-wrapper-form2">
-            <label for="{{ form1.order_number.id_for_label }}">numer zlecenia</label>
+            <label for="{{ form1.order_number.id_for_label }}"> {{ form1.order_number.label }} </label>
             {{ form1.order_number }}
         </div>
         <div class="sample-field-wrapper-form2">
-            <label for="{{ form1.mechanism_name_and_symbol.id_for_label }}">nazwa i symbol mechanizmu</label>
+            <label for="{{ form1.mechanism_name_and_symbol.id_for_label }}"> {{ form1.mechanism_name_and_symbol.label }} </label>
             {{ form1.mechanism_name_and_symbol }}
         </div>
         <div class="sample-field-wrapper-form2">
-            <label for="{{ form1.sample_delivery.id_for_label }}">sposób dostarczenia próbki</label>
+            <label for="{{ form1.sample_delivery.id_for_label }}"> {{ form1.sample_delivery.label }} </label>
             {{ form1.sample_delivery }}
         </div>
         <div class="divider"></div>
         <div class="form-part-desc">3. Podsumowanie</div>
         <div class="sample-field-wrapper-form2">
-            <label for="{{ form1.is_OK.id_for_label }}">Czy próbka spełnia wymagania?</label>
+            <label for="{{ form1.is_OK.id_for_label }}"> {{ form1.is_OK.label }} </label>
             {{ form1.is_OK }}
         </div>
         <div class="sample-field-wrapper-form2">
-            <label for="{{ form1.if_not_why.id_for_label }}">Jeżeli nie, dlaczego</label>
+            <label for="{{ form1.if_not_why.id_for_label }}"> {{ form1.if_not_why.label }} </label>
             {{ form1.if_not_why }}
         </div>
         <input id="submit-button" type="submit" value="zatwierdź" class="btn-primary submit-button"/>

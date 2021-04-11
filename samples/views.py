@@ -20,18 +20,22 @@ def sample_add(request, *args, **kwargs):
     form3 = ResearchForm(request.POST)
     form = SampleForm(data=request.POST, mode=form2["mode_name"].value())
 
+    action = 'None'
     if not request.is_ajax():
         if request.method == 'POST':
             if form.is_valid():
                 if form2['mode_name'].value() == "Add":
                     form.save()
+                    action = "Add"
                 elif form2['mode_name'].value() == "Edit":
                     obj = Sampling.objects.get(number=form['number'].value())
                     form = SampleForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
                     form.save()
+                    action = "Edit"
                 else:
                     obj = Sampling.objects.get(number=form['number'].value())
                     obj.delete()
+                    action = "Delete"
             else:
                 messages.error(request, form.errors)
 
@@ -39,6 +43,7 @@ def sample_add(request, *args, **kwargs):
         "form0": form2,
         "form1": form,
         "form2": form3,
+        "action": action
     }
 
     if request.is_ajax():
@@ -90,25 +95,30 @@ def research_add(request, *args, **kwargs):
     form3 = FindResearch(request.POST)
     form = ResearchForm(data=request.POST, mode=form2["mode_name"].value())
 
+    action = 'None'
     if not request.is_ajax():
         if request.method == 'POST':
             if form.is_valid():
                 if form2['mode_name'].value() == "Add":
                     form.save()
+                    action = 'Add'
                 elif form2['mode_name'].value() == "Edit":
                     obj = Research.objects.get(name=form["name"].value())
                     form = ResearchForm(mode=form2["mode_name"].value(), data=request.POST, instance=obj)
                     form.save()
+                    action = 'Edit'
                 else:
                     obj = Research.objects.get(name=form["name"].value())
                     obj.delete()
+                    action = 'Delete'
             else:
                 messages.error(request, form.errors)
 
     contex = {
         "form0": form2,
         "form2": form,
-        "form3": form3
+        "form3": form3,
+        "action": action
     }
 
     if request.is_ajax():
