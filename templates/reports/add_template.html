@@ -1,0 +1,104 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+    <title>dodaj szablon</title>
+    <style>
+        section > div{
+            width: 65vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+
+        #file-input{
+            display: inline-block;
+            text-align: left;
+            margin: 20px;
+        }
+        #file-input > *{
+            font-size: 18px;
+            margin: 7px;
+        }
+        .form-code{
+            min-width: 250px;
+            width: 30%;
+            padding: 2%;
+            text-align: left;
+            display: inline-block;
+        }
+        .form-code > *{
+            display: block;
+        }
+
+        #code-desc{
+            width: max-content;
+            padding: 10px;
+            margin: auto;
+            background-color: #abbaff;
+            border-radius: 15px;
+            font-size: 18px;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            document.getElementById("find-code-sample").addEventListener("change", function (event) {
+                document.getElementById("show-code-sample").innerText = event.target.value;
+            });
+            document.getElementById("find-code-research").addEventListener("change", function (event) {
+                document.getElementById("show-code-research").innerText = event.target.value;
+            });
+            document.getElementById("show-code-sample").innerText = document.getElementById("find-code-sample").value;
+            document.getElementById("show-code-research").innerText = document.getElementById("find-code-research").value;
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="file-input">
+                    <label for="myfile">dodaj plik szablonu (.docx)</label>
+                    <input type="file" name="myfile">
+                </div>
+                <p id="code-desc"> Poniżej znajduje się lista kodów pól formularzy, które mają znaleźć się w raporcie. <br>
+                    Można je wpisać w dowolnym miejscu w raporcie w podwójnych klamrach bez spacji. <br>
+                    Przykład: &lcub;&lcub;przykladowy_kod&rcub;&rcub;. Więcej informacji znajduje się w dokumentacji.</p>
+                <div>
+                    <div class="form-code">
+                    {% if samples_fields %}
+                        <label for="kod">kody elementów formularza próbek</label>
+                        <select name="kod" id="find-code-sample">
+                            {% for key, value in samples_fields.items %}
+                                <option value="{{ value }}">{{ key }}</option>
+                            {% endfor %}
+                        </select>
+                        <div>kod:</div>
+                        <textarea id="show-code-sample"></textarea>
+                    {% endif %}
+                    </div>
+                    <div class="form-code">
+                        {% if research_fields %}
+                            <label for="kod">kody elementów formularza badań</label>
+                            <select name="kod" id="find-code-research">
+                                {% for key, value in research_fields.items %}
+                                    <option value="{{ value }}">{{ key }}</option>
+                                {% endfor %}
+                            </select>
+                            <div>kod:</div>
+                            <textarea id="show-code-research"></textarea>
+                        {% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Dodaj</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

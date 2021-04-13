@@ -18,7 +18,7 @@ from django.urls import path, include
 
 
 from app.views import main_site
-from samples import views
+from reports.views import choose_mode, add_template, generate_report
 from samples.views import sample_add, research_add
 
 urlpatterns = [
@@ -27,4 +27,7 @@ urlpatterns = [
     path('accounts/', include("django.contrib.auth.urls")),
     path('sample_add/', sample_add),
     path('research_add/', research_add),
+    path('choose_mode/', choose_mode),
+    path('choose_mode/add_template', add_template),
+    path('choose_mode/generate_report/', generate_report)
 ]

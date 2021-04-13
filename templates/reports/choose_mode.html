@@ -1,0 +1,50 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+    <title>wybierz tryb</title>
+    <style>
+        .main-button{
+            transition: 0.4s;
+            width: max-content;
+            margin: auto auto 5vh;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 28px;
+            background-color: #b2b2ff;
+            -webkit-box-shadow: 3px 3px 12px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 3px 3px 12px 0px rgba(0,0,0,0.75);
+            box-shadow: 3px 3px 12px 0px rgba(0,0,0,0.75);
+        }
+
+        section > div{
+            width: 80vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+
+        .main-button:hover{
+            background-color: #8e90ff;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section>
+       <div>
+           <div class="main-button" onclick="location.href = 'generate_report'">
+               <p>Generuj Raport</p>
+           </div>
+           <div class="main-button" onclick="location.href = 'add_template'">
+               <p>Dodaj Szablon</p>
+           </div>
+       </div>
+    </section>
+{% endblock %}
