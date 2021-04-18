@@ -43,10 +43,24 @@
             border-radius: 15px;
             font-size: 18px;
         }
+
+        .choose-to-delete-div > *{
+            display: block;
+        }
+        .choose-to-delete-div{
+            margin: 2% 0px 2% 0px;
+            display: inline-block;
+            text-align: center;
+        }
+        button[type="submit"]{
+            display: inline-block;
+        }
     </style>
 
     <script>
         window.onload = function () {
+            document.getElementById("delete-template-form").style.display = "none";
+            document.getElementById("set-mode").value = "add";
             document.getElementById("find-code-sample").addEventListener("change", function (event) {
                 document.getElementById("show-code-sample").innerText = event.target.value;
             });
@@ -55,6 +69,18 @@
             });
             document.getElementById("show-code-sample").innerText = document.getElementById("find-code-sample").value;
             document.getElementById("show-code-research").innerText = document.getElementById("find-code-research").value;
+            document.getElementById("set-mode").addEventListener("change", function (event) {
+                if(event.target.value == "add"){
+                    document.getElementById("delete-template-form").style.display = "none";
+                    document.getElementById("add-template-form").style.display = "block";
+                    document.getElementById("submit-template").innerText = "Dodaj";
+                }
+                else{
+                    document.getElementById("delete-template-form").style.display = "block";
+                    document.getElementById("add-template-form").style.display = "none";
+                    document.getElementById("submit-template").innerText = "Usuń";
+                }
+            })
         }
     </script>
 {% endblock %}
@@ -64,40 +90,61 @@
         <div>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div id="file-input">
-                    <label for="myfile">dodaj plik szablonu (.docx)</label>
-                    <input type="file" name="myfile">
+                <div class="choose-to-delete-div">
+                    <label for="mode">wybierz tryb formularza</label>
+                    <select name="mode" id="set-mode">
+                        <option value="add">dodaj szablon</option>
+                        <option value="delete">usuń szablon</option>
+                    </select>
                 </div>
-                <p id="code-desc"> Poniżej znajduje się lista kodów pól formularzy, które mają znaleźć się w raporcie. <br>
-                    Można je wpisać w dowolnym miejscu w raporcie w podwójnych klamrach bez spacji. <br>
-                    Przykład: &lcub;&lcub;przykladowy_kod&rcub;&rcub;. Więcej informacji znajduje się w dokumentacji.</p>
-                <div>
-                    <div class="form-code">
-                    {% if samples_fields %}
-                        <label for="kod">kody elementów formularza próbek</label>
-                        <select name="kod" id="find-code-sample">
-                            {% for key, value in samples_fields.items %}
-                                <option value="{{ value }}">{{ key }}</option>
-                            {% endfor %}
+                <div id="delete-template-form" >
+                    <div class="choose-to-delete-div">
+                        <label for="choose-to-delete">wybierz szablon do usunięcia</label>
+                        <select name="choose-to-delete">
+                            {% if reports %}
+                                {% for element in reports %}
+                                    <option value="{{ element }}">{{ element }}</option>
+                                {% endfor %}
+                            {% endif %}
                         </select>
-                        <div>kod:</div>
-                        <textarea id="show-code-sample"></textarea>
-                    {% endif %}
                     </div>
-                    <div class="form-code">
-                        {% if research_fields %}
-                            <label for="kod">kody elementów formularza badań</label>
-                            <select name="kod" id="find-code-research">
-                                {% for key, value in research_fields.items %}
+                </div>
+                <div id="add-template-form">
+                    <div id="file-input">
+                        <label for="myfile">dodaj plik szablonu (.docx)</label>
+                        <input type="file" name="myfile">
+                    </div>
+                    <p id="code-desc"> Poniżej znajduje się lista kodów pól formularzy, które mają znaleźć się w raporcie. <br>
+                        Można je wpisać w dowolnym miejscu w raporcie w podwójnych klamrach bez spacji. <br>
+                        Przykład: &lcub;&lcub;przykladowy_kod&rcub;&rcub;. Więcej informacji znajduje się w dokumentacji.</p>
+                    <div>
+                        <div class="form-code">
+                        {% if samples_fields %}
+                            <label for="kod">kody elementów formularza próbek</label>
+                            <select name="kod" id="find-code-sample">
+                                {% for key, value in samples_fields.items %}
                                     <option value="{{ value }}">{{ key }}</option>
                                 {% endfor %}
                             </select>
                             <div>kod:</div>
-                            <textarea id="show-code-research"></textarea>
+                            <textarea id="show-code-sample"></textarea>
                         {% endif %}
+                        </div>
+                        <div class="form-code">
+                            {% if research_fields %}
+                                <label for="kod">kody elementów formularza badań</label>
+                                <select name="kod" id="find-code-research">
+                                    {% for key, value in research_fields.items %}
+                                        <option value="{{ value }}">{{ key }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div>kod:</div>
+                                <textarea id="show-code-research"></textarea>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary">Dodaj</button>
+                <button id="submit-template" type="submit" class="btn-primary">Dodaj</button>
             </form>
         </div>
     </section>

@@ -2,7 +2,74 @@
 
 {% block title %}
     <title>generuj raport</title>
+    <style>
+        section > form{
+            width: 65vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+        .select-div > *{
+            display: block;
+            margin: 2px;
+            text-align: center;
+        }
+        .select-div{
+            display: inline-block;
+            margin: 20px 7% 20px 7%;
+        }
+        .error{
+            color: red;
+            font-size: 15px;
+        }
+        button[type="submit"]{
+            font-size: 20px;
+            margin-top: 2%;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
+    <section>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div id="selects-div">
+                <div class="select-div">
+                    <label for="sample">wybierz próbkę</label>
+                    <select name="sample">
+                        {% if samples %}
+                            {% for element in samples %}
+                                <option value="{{ element }}">{{ element }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="select-div">
+                    <label for="report">wybierz szablon</label>
+                    <select>
+                        {% if reports %}
+                            {% for element in reports %}
+                                <option value="{{ element }}">{{ element }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            {% if samples|length == 0 %}
+                <p class="error">brak dostępnych próbek, nie można wygenerować raportu</p>
+                <button type="submit" class="btn-primary" disabled>Generuj</button>
+            {% elif reports|length == 0 %}
+                <p class="error">brak dostępnych szablonów, nie można wygenerować raportu</p>
+                <button type="submit" class="btn-primary" disabled>Generuj</button>
+            {% else %}
+                <button type="submit" class="btn-primary">Generuj</button>
+            {% endif %}
+        </form>
+
+    </section>
 {% endblock %}
