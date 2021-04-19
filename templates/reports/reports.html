@@ -51,7 +51,7 @@
                 </div>
                 <div class="select-div">
                     <label for="report">wybierz szablon</label>
-                    <select>
+                    <select name="template">
                         {% if reports %}
                             {% for element in reports %}
                                 <option value="{{ element }}">{{ element }}</option>
