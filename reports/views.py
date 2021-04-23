@@ -1,8 +1,10 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from samples.forms import SampleForm, ResearchForm
 import os
 from samples.models import Sampling, WIJHARS, MetodAndNorm, ControlType, DeliveryWay, Type
+from docx import Document
 # Create your views here.
 
 
@@ -64,7 +66,24 @@ def generate_report(request, *args, **kwargs):
                     if value == "YES": value = "Tak"
                     else: value = "Nie"
                 sample_values[prop] = str(value)
-            print(sample_values)
+            #print(sample_values)
+            document = Document("media/"+request.POST.get("template", ""))
+            for paragraph in document.paragraphs:
+                for prop in sample_values.keys():
+                    if "{{"+prop+"}}" in paragraph.text:
+                        paragraph.text = paragraph.text.replace("{{"+prop+"}}", sample_values[prop])
+            for table in  document.tables:
+                for column in table.columns:
+                    for cell in column.cells:
+                        for prop in sample_values.keys():
+                            if "{{" + prop + "}}" in cell.text:
+                                cell.text = cell.text.replace("{{" + prop + "}}", sample_values[prop])
+            document.save("generated_reports/report.docx")
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            response['Content-Disposition'] = 'attachment; filename=report.docx'
+            document.save(response)
+            return response
+
         return render(request, 'reports/reports.html', context)
     else:
         return render(request, 'main_not_logged.html', {})
