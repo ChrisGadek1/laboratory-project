@@ -20,6 +20,7 @@ from django.urls import path, include
 from app.views import main_site
 from reports.views import choose_mode, add_template, generate_report
 from samples.views import sample_add, research_add
+from csvs.views import generate_csv, choose_mode_csv, read_csv
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,5 +30,8 @@ urlpatterns = [
     path('research_add/', research_add),
     path('choose_mode/', choose_mode),
     path('choose_mode/add_template', add_template),
-    path('choose_mode/generate_report/', generate_report)
+    path('choose_mode/generate_report/', generate_report),
+    path('choose_mode_csv/', choose_mode_csv),
+    path('choose_mode_csv/csv/', generate_csv),
+    path('choose_mode_csv/read_csv/', read_csv)
 ]
