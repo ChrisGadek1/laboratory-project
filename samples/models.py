@@ -100,6 +100,9 @@ class Sampling(models.Model):
     is_OK = models.CharField(max_length=3, choices=[('YES', 'Tak'), ('NO', 'Nie')])
     if_not_why = models.TextField(blank=True)
 
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in Sampling._meta.fields]
+
     def __str__(self):
         return "%s" % self.code
 

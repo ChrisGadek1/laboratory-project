@@ -19,13 +19,15 @@ from django.urls import path, include
 
 from app.views import main_site
 from reports.views import choose_mode, add_template, generate_report
-from samples.views import sample_add, research_add
+from samples.views import sample_add, research_add, sample_menu, sample_search
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_site),
     path('accounts/', include("django.contrib.auth.urls")),
     path('sample_add/', sample_add),
+    path('sample_search/', sample_search),
+    path('sample/', sample_menu),
     path('research_add/', research_add),
     path('choose_mode/', choose_mode),
     path('choose_mode/add_template', add_template),

@@ -1,0 +1,213 @@
+{% extends 'basic.html' %}
+{% load custom_tags %}
+
+
+{% block title %}
+    <title>wyszukaj próbki</title>
+    <style>
+         #search-form{
+            width: 65vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+        #add-filter-label{
+            font-size: 24px;
+        }
+        #select-filter-wrapper{
+            margin-bottom: 20px;
+        }
+        .filter-wrapper{
+            margin: 15px;
+        }
+        .divider{
+            width: 100%;
+            border: 1px solid #000000;
+            margin: 20px 0px 20px 0px;
+        }
+        #results-number{
+            font-size: 24px;
+        }
+        .result-of-searching{
+            font-size: 20px;
+            background-color: #abbaff;
+            width: min-content;
+            margin: 10px auto 10px auto;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.75);
+
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            let i = 0
+            {% for sample in samples %}
+                samples.push({})
+                {% for k,v in sample.get_fields %}
+                    {% if k != "id" %}
+                        samples[i]["{{ k }}"] = "{{ sample | get_prop_value:k }}"
+                    {% endif %}
+                {% endfor %}
+                i++
+            {% endfor %}
+            filter()
+            updateFilters()
+        }
+
+        let filters = {}
+
+        let samples = []
+        let added = [];
+        let added_filters = [];
+
+        function createDeleteButton() {
+            let deleteButton = document.createElement("button");
+            deleteButton.setAttribute("class", "btn-primary");
+            deleteButton.setAttribute("onclick", "deleteFilters()")
+            deleteButton.setAttribute("id", "delete-button")
+            deleteButton.innerHTML = "Usuń"
+            return deleteButton;
+        }
+
+        function addFilters() {
+            let new_filter = document.getElementById("select-filter").value;
+            if(!(added_filters.includes(new_filter))){
+                if(added.length > 0){
+                    added[added.length -1].disabled = true;
+                    added[added.length - 1].parentNode.removeChild(document.getElementById("delete-button"))
+                }
+                document.getElementById("wrapper-"+new_filter).style.display = "block";
+                let last = document.getElementById("select-"+new_filter);
+                last.parentNode.appendChild(createDeleteButton());
+                added.push(last);
+                added_filters.push(new_filter);
+                let filtered_value = document.getElementById("select-"+new_filter).value;
+                filters[new_filter] = filtered_value;
+                filter();
+                updateFilters();
+            }
+
+        }
+
+        function deleteFilters() {
+            let old_filter = added[added.length - 1].id.split("-")[1];
+            added[added.length - 1].parentNode.removeChild(document.getElementById("delete-button"));
+            added.pop()
+            added_filters.pop()
+            if(added.length > 0){
+                added[added.length - 1].disabled = false;
+                let last = added[added.length - 1];
+                last.parentNode.appendChild(createDeleteButton());
+            }
+            document.getElementById("wrapper-"+old_filter).style.display = "none";
+            delete filters[old_filter];
+            filter();
+            updateFilters();
+        }
+
+        function setFilters(e) {
+            filters[e.target.id.split("-")[1]] = e.target.value
+            filter();
+            updateFilters();
+        }
+
+        function onlyUnique(value, index, self) {
+          return self.indexOf(value) === index;
+        }
+
+        function updateFilters() {
+            let options = {}
+            samples.forEach((sample) => {
+                for(const [key, value] of Object.entries(sample)){
+                    if(!(added_filters.includes(key))){
+                        if(!options.hasOwnProperty(key)){
+                            options[key] = []
+                            console.log(key)
+                            document.getElementById("select-"+key).innerHTML = ""
+                        }
+                        let flag = true
+                        added_filters.forEach((filter) => {
+                            if(filters[filter] !== sample[filter])
+                                flag = false
+                        })
+                        if(flag){
+                            options[key].push(value.toString())
+                        }
+                    }
+
+                }
+            })
+            for(const [key, value] of Object.entries(options)){
+                options[key] = value.filter(onlyUnique);
+                options[key].forEach((option) => {
+                    let tag = document.createElement("option");
+                    tag.setAttribute("value", option)
+                    tag.innerText = option;
+                    document.getElementById("select-"+key).appendChild(tag);
+                })
+
+            }
+
+        }
+
+        function filter() {
+            let wrapper = document.getElementById("result-codes-wrapper");
+            wrapper.innerHTML = "";
+            let filteredSamples = samples.filter((value1) => {
+                for(const [key, value] of Object.entries(filters)){
+                    if(filters[key].toString() != value1[key].toString()){
+                        return false;
+                    }
+                }
+                return true;
+            })
+            filteredSamples.forEach((sample) => {
+                wrapper.innerHTML = wrapper.innerHTML + "" +
+                    "<div class='result-of-searching'>" +
+                        "<div>"+sample.code+"</div>" +
+                    "</div>"
+            })
+        }
+    </script>
+{% endblock %}
+
+
+
+{% block content %}
+    <section id="search-form">
+        <p id="add-filter-label">Dodaj filtr wyszukiwania</p>
+        <div id="select-filter-wrapper">
+            <select id="select-filter">
+                {% for key, value in filters.items %}
+                    <option value="{{ key }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn-primary" onclick="addFilters()">Dodaj</button>
+        </div>
+        <div id="flters-wrapper">
+            {% for key, value in filters.items %}
+                <div id="wrapper-{{ key }}" class="filter-wrapper" style="display: none">
+                    <label for="select-{{ key }}">{{ value }}</label>
+                    <select onchange="setFilters(event)" name="select-{{ key }}" id="select-{{ key }}">
+
+                    </select>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="divider"></div>
+        <div>
+            <div id="results-number">
+                <p>znaleziono próbki o podanych kodach:</p>
+            </div>
+            <div id="result-codes-wrapper">
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

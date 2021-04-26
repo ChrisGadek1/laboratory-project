@@ -1,11 +1,9 @@
 {% extends 'basic.html' %}
 
-{% block title %}
-    <title>Baza danych próbek</title>
-
+{%  block title %}
+    <title>Operacje na próbkach</title>
     <style>
-
-        #wrapper-logged{
+        #choose-option{
             width: 80vw;
             padding: 2vw;
             background-color: #c8d4ff;
@@ -16,8 +14,7 @@
             -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
             box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
         }
-
-        .main-button{
+        .choose-button{
             transition: 0.4s;
             width: max-content;
             margin: auto auto 5vh;
@@ -30,40 +27,21 @@
             box-shadow: 3px 3px 12px 0px rgba(0,0,0,0.75);
         }
 
-        .main-button:hover{
+        .choose-button:hover{
             background-color: #8e90ff;
             transition: 0.4s;
             cursor: pointer;
         }
-
     </style>
 {% endblock %}
 
-{% block nav %}
-
-    <h3 style="text-align: center"> Strona Główna </h3>
-
-{% endblock %}
-
 {% block content %}
-
-    <section id="wrapper-logged">
-        <div class="main-button" onclick="location.href = 'sample'">
-            <p>Operacje na próbkach</p>
+    <section id="choose-option">
+        <div class="choose-button" onclick="location.href = 'http://127.0.0.1:8000/sample_add'">
+            <p>Dodaj/Modyfikuj/Usuń</p>
         </div>
-        <div class="main-button" onclick="location.href = 'research_add'">
-            <p>Operacje na badaniach</p>
-        </div>
-        <div class="main-button">
-            <p>Edytuj pozostałe dane</p>
-        </div>
-        <div class="main-button" onclick="location.href = 'choose_mode'">
-            <p>Raporty</p>
-        </div>
-        <div class="main-button">
-            <p>Dodaj Użytkownika</p>
+        <div class="choose-button" onclick="location.href = 'http://127.0.0.1:8000/sample_search'">
+            <p>Szukaj</p>
         </div>
     </section>
-
-
 {% endblock %}

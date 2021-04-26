@@ -90,6 +90,27 @@ def sample_add(request, *args, **kwargs):
         return redirect('/')
 
 
+def sample_menu(request, *args, **kwargs):
+    context = {}
+    if request.user.is_authenticated:
+        return render(request, 'sample_menu.html', context)
+    else:
+        return redirect('/')
+
+
+def sample_search(request, *args, **kwargs):
+    if request.user.is_authenticated:
+        filters = SampleForm.Meta.labels
+        context = {
+            "filters": {v: k for v, k in filters.items()},
+            "samples": Sampling.objects.select_related('WIJHARS').all()
+
+        }
+        return render(request, 'sample_search.html', context)
+    else:
+        return redirect('/')
+
+
 def research_add(request, *args, **kwargs):
     form2 = ChoiceAction(request.POST)
     form3 = FindResearch(request.POST)
