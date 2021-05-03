@@ -285,7 +285,16 @@
                 </div>
             </div>
         </div>
-
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.requirements.id_for_label }}">{{ form2.requirements.label }}</label>
+                {{ form2.requirements }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form2.unit.id_for_label }}">{{ form2.unit.label }}</label>
+                {{ form2.unit }}
+            </div>
+        </div>
         <div id="divider"></div>
         <div class="form-part-desc">3. Podsumowanie </div>
         <div class="form-inner-wrapper">
