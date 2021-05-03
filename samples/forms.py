@@ -57,13 +57,25 @@ class SampleForm(forms.ModelForm):
             'mechanism_name_and_symbol': _('Nazwa i symbol mechanizmu'),
             'sample_delivery': _('Sposób dostarczenia próbki'),
             'is_OK': _('Czy próbka spełnia wymagania?'),
-            'if_not_why': _('Jeżeli nie spełnia, dlaczego')
+            'if_not_why': _('Jeżeli nie spełnia, dlaczego'),
+            'recipient': _('Odbiorca'),
+            'agreement_number': _('Nr Zlecenia/Umowy'),
+            'collection_date': _('Data pobrania próbki'),
+            'case_number': _('Numer sprawy'),
+            'delivery_date': _('Data dostarczenia do laboratorium'),
+            'type_of_package': _('Rodzaj opakowania jednostkowego'),
+            'batch_size': _('Wielkość Partii'),
+            'batch_number': _('Numer Partii'),
+            'batch_production_date': _('Data produkcji')
         }
         widgets = {
             'code': forms.TextInput(attrs={'placeholder': 'kod próbki'}),
             'admission_date' : DateInput,
             'expiration_date' : DateInput,
             'completion_date' : DateInput,
+            'batch_production_date': DateInput,
+            'collection_date': DateInput,
+            'delivery_date': DateInput
         }
 
     def clean_number(self, *args, **kwargs):
@@ -114,7 +126,9 @@ class ResearchForm(forms.ModelForm):
             'status': _('Status metody'),
             'uncertainty': _('Niepewność, LOD, LOQ'),
             'summary_meet_requirements': _('Czy próbka spełnia wymagania?'),
-            'summary_requirements_explains': _('Jeżeli nie spełnia, dlaczego')
+            'summary_requirements_explains': _('Jeżeli nie spełnia, dlaczego'),
+            'requirements': _('Wymagania wg'),
+            'unit': _('Jednostka')
         }
 
         widgets = {

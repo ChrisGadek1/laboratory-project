@@ -82,6 +82,15 @@ def sample_add(request, *args, **kwargs):
             'sample_delivery': obj.sample_delivery_id,
             'is_OK': obj.is_OK,
             'if_not_why': obj.if_not_why,
+            'recipient': obj.recipient,
+            'agreement_number': obj.agreement_number,
+            'collection_date': obj.collection_date,
+            'case_number': obj.case_number,
+            'delivery_date': obj.delivery_date,
+            'type_of_package': obj.type_of_package,
+            'batch_size': obj.batch_size,
+            'batch_number': obj.batch_number,
+            'batch_production_date': obj.batch_production_date
         }, status=200)
 
     if request.user.is_authenticated:
@@ -159,7 +168,9 @@ def research_add(request, *args, **kwargs):
             'status': obj.status_id,
             'uncertainty': obj.uncertainty,
             'summary_meet_requirements': obj.summary_meet_requirements,
-            'summary_requirements_explains': obj.summary_requirements_explains
+            'summary_requirements_explains': obj.summary_requirements_explains,
+            'requirements': obj.requirements,
+            'unit': obj.unit
         }, status=200)
     elif request.user.is_authenticated:
         return render(request, 'research_add.html', contex)

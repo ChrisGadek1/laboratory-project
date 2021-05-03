@@ -99,6 +99,15 @@ class Sampling(models.Model):
     sample_delivery = models.ForeignKey(DeliveryWay, on_delete=models.PROTECT)
     is_OK = models.CharField(max_length=3, choices=[('YES', 'Tak'), ('NO', 'Nie')])
     if_not_why = models.TextField(blank=True)
+    recipient = models.CharField(blank=True, null=True, max_length=200)
+    agreement_number = models.CharField(blank=True, null=True, max_length=20)
+    collection_date = models.DateField(null=True)
+    case_number = models.CharField(blank=True, null=True, max_length=20)
+    delivery_date = models.DateField(null=True)
+    type_of_package = models.CharField(blank=True, null=True, max_length=100)
+    batch_size = models.CharField(blank=True, null=True, max_length=50)
+    batch_number = models.CharField(blank=True, null=True, max_length=50)
+    batch_production_date = models.DateField(null=True)
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Sampling._meta.fields]
@@ -125,6 +134,8 @@ class Research(models.Model):
     uncertainty = models.CharField(max_length=300)
     summary_meet_requirements = models.BooleanField()
     summary_requirements_explains = models.TextField(blank=True)
+    requirements = models.TextField(blank=True, null=True)
+    unit = models.CharField(blank=True, null=True, max_length=50)
 
     def __str__(self):
         return "%s" % self.name

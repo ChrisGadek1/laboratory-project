@@ -308,9 +308,40 @@
                 </div>
             </div>
         </div>
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.type_of_package.id_for_label }}"> {{ form1.type_of_package.label }} </label>
+                {{ form1.type_of_package }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.collection_date.id_for_label }}"> {{ form1.collection_date.label }} </label>
+                {{ form1.collection_date }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.recipient.id_for_label }}"> {{ form1.recipient.label }} </label>
+                {{ form1.recipient }}
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="form-part-desc">2. Dane identyfikacyjne partii</div>
+
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.batch_size.id_for_label }}"> {{ form1.batch_size.label }} </label>
+                {{ form1.batch_size }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.batch_number.id_for_label }}"> {{ form1.batch_number.label }} </label>
+                {{ form1.batch_number }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.batch_production_date.id_for_label }}"> {{ form1.batch_production_date.label }} </label>
+                {{ form1.batch_production_date }}
+            </div>
+        </div>
 
         <div class="divider"></div>
-        <div class="form-part-desc">2. Dane z protokołu przyjęcia</div>
+        <div class="form-part-desc">3. Dane z protokołu przyjęcia do laboratorium</div>
         <div class="form-part-title"> Producent</div>
         <div class="form-inner-wrapper">
             <div class="sample-field-wrapper">
@@ -384,8 +415,22 @@
             <label for="{{ form1.sample_delivery.id_for_label }}"> {{ form1.sample_delivery.label }} </label>
             {{ form1.sample_delivery }}
         </div>
+        <div class="form-inner-wrapper">
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.agreement_number.id_for_label }}"> {{ form1.agreement_number.label }} </label>
+                {{ form1.agreement_number }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.case_number.id_for_label }}"> {{ form1.case_number.label }} </label>
+                {{ form1.case_number }}
+            </div>
+            <div class="sample-field-wrapper">
+                <label for="{{ form1.delivery_date.id_for_label }}"> {{ form1.delivery_date.label }} </label>
+                {{ form1.delivery_date }}
+            </div>
+        </div>
         <div class="divider"></div>
-        <div class="form-part-desc">3. Podsumowanie</div>
+        <div class="form-part-desc">4. Podsumowanie</div>
         <div class="sample-field-wrapper-form2">
             <label for="{{ form1.is_OK.id_for_label }}"> {{ form1.is_OK.label }} </label>
             {{ form1.is_OK }}
