@@ -129,7 +129,7 @@ class Research(models.Model):
     samples_number = models.IntegerField()
     result = models.IntegerField()
     start_date = models.DateField()
-    completion_date = models.DateField()
+    research_completion_date = models.DateField()
     status = models.ForeignKey(ResearchStatus, on_delete=models.PROTECT)
     uncertainty = models.CharField(max_length=300)
     summary_meet_requirements = models.BooleanField()
