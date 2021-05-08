@@ -132,9 +132,7 @@ def generate_report(request, *args, **kwargs):
                             new_row = row_tmp.cells
                             cells_copy = copy.deepcopy(cells)
                             #word manipulation:
-                            print(columns)
                             for i in range(len(columns)):
-                                print(i)
                                 tc = new_row[i]._tc
                                 tcPr = tc.tcPr
                                 borders = OxmlElement('w:tcBorders')
@@ -149,12 +147,9 @@ def generate_report(request, *args, **kwargs):
                                 tcPr.append(borders)
                                 for replaceable in columns[i]:
                                     if replaceable in props:
-                                        print("{{"+replaceable+"}}", research.__dict__.get(replaceable))
                                         text = cells_copy[i].text
-                                        print("poprzedni tekst:",text)
                                         new_row[i].text = text.replace("{{"+replaceable+"}}", str(research.__dict__.get(replaceable)))
                                         cells_copy[i].text = new_row[i].text
-                                        print("po zmianie",new_row[i].text)
                                     elif replaceable == "incr":
                                         new_row[i].text = str(it)
                                     else:
