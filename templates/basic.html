@@ -10,8 +10,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/basic.css' %}">
+
+    <style>
+        #beautiful_text{
+            text-align: center;
+            font-size: 20px;
+            padding: 30px;
+            color: red;
+        }
+    </style>
+
 </head>
 <body>
+
+
 
     <nav id="main-nav">
 
@@ -32,14 +44,18 @@
         {% endblock %}
     </div>
 
-    {% if not user.is_authenticated %}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
+    <div id="beautiful_text">
+        {% if not user.is_authenticated %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         {% endif %}
-    {% endif %}
+     </div>
+
+
 </body>
 </html>

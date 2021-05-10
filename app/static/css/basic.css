@@ -39,3 +39,10 @@ body{
     left: 20px;
     font-size: 25px;
 }
+
+#beautiful_text{
+    text-align: center;
+    font-size: 20px;
+    padding: 30px;
+    color: red;
+}
