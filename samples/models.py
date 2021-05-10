@@ -218,7 +218,7 @@ class Research(models.Model):
     specification = models.CharField(max_length=300)
     ordinance = models.CharField(max_length=300)
     samples_number = models.IntegerField()
-    result = models.IntegerField()
+    result = models.CharField(max_length=200)
     start_date = models.DateField()
     research_completion_date = models.DateField()
     status = models.ForeignKey(ResearchStatus, on_delete=models.PROTECT)

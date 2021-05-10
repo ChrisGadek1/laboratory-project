@@ -117,7 +117,7 @@
 {% if "samples.can_operate_on_Research" in perms %}
 
 <section id="sample-form">
-    <form id="add_sample" class="login_container" method="POST"> {% csrf_token %}
+    <form id="add_sample" class="login_container" method="POST" action=""> {% csrf_token %}
 
 
         <div class="form-part-desc"> 0. Wybór trybu </div>

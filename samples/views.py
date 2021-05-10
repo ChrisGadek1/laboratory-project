@@ -127,7 +127,7 @@ def research_add(request, *args, **kwargs):
     form2 = ChoiceAction(request.POST)
     form3 = FindResearch(request.POST)
     form = ResearchForm(data=request.POST, mode=form2["mode_name"].value())
-
+    print("test")
     action = 'None'
     if not request.is_ajax():
         if request.method == 'POST':
