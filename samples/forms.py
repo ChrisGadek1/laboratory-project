@@ -1,5 +1,8 @@
 from django.utils.translation import gettext_lazy as _
-from .models import Sampling, Research, Mode, FindResearch
+from .models import Sampling, Research, Mode, FindResearch, ControlType, FindControlType, \
+    DeliveryWay, FindDeliveryWay, WIJHARS, FindWIJHARS, Type, FindType, ResearchStatus, FindResearchStatus, \
+    MetodAndNorm, FindMetodAndNorm
+
 from django import forms
 
 
@@ -14,6 +17,28 @@ class ChoiceAction(forms.ModelForm):
         fields = ('mode_name',)
         labels = {
             'mode_name': _('Tryb formularza'),
+        }
+
+
+class ControlTypeForm(forms.ModelForm):
+    def __init__(self, mode, *args, **kwargs):
+        self.mode = mode
+        super(ControlTypeForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = ControlType
+        fields = '__all__'
+        labels = {
+            'name': _('nazwa'),
+        }
+
+
+class FindControlType(forms.ModelForm):
+    class Meta:
+        model = FindControlType
+        fields = '__all__'
+        labels = {
+            'control_type_name': _('Wybierz typ kontroli')
         }
 
 
@@ -70,9 +95,9 @@ class SampleForm(forms.ModelForm):
         }
         widgets = {
             'code': forms.TextInput(attrs={'placeholder': 'kod próbki'}),
-            'admission_date' : DateInput,
-            'expiration_date' : DateInput,
-            'completion_date' : DateInput,
+            'admission_date': DateInput,
+            'expiration_date': DateInput,
+            'completion_date': DateInput,
             'batch_production_date': DateInput,
             'collection_date': DateInput,
             'delivery_date': DateInput
@@ -98,9 +123,9 @@ class SampleForm(forms.ModelForm):
 class FindResearch(forms.ModelForm):
     class Meta:
         model = FindResearch
-        fields = ('__all__')
+        fields = '__all__'
         labels = {
-            'research_name':_('Wybierz badanie')
+            'research_name': _('Wybierz badanie')
         }
 
 
@@ -143,3 +168,113 @@ class ResearchForm(forms.ModelForm):
             raise forms.ValidationError("nie istnieje badanie o podanej nazwie")
         else:
             return self.cleaned_data.get("name")
+
+
+class DeliveryWayForm(forms.ModelForm):
+    def __init__(self, mode, *args, **kwargs):
+        self.mode = mode
+        super(DeliveryWayForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = DeliveryWay
+        fields = '__all__'
+        labels = {
+            'name': _('nazwa'),
+        }
+
+
+class FindDeliveryWays(forms.ModelForm):
+    class Meta:
+        model = FindDeliveryWay
+        fields = '__all__'
+        labels = {
+            'delivery_way_name': _('Wybierz sposób dostarczania')
+        }
+
+
+class WIJHARSForm(forms.ModelForm):
+    def __init__(self, mode, *args, **kwargs):
+        self.mode = mode
+        super(WIJHARSForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = WIJHARS
+        fields = '__all__'
+        labels = {
+            'name': _('nazwa'),
+        }
+
+
+class FindWIJHARSs(forms.ModelForm):
+    class Meta:
+        model = FindWIJHARS
+        fields = '__all__'
+        labels = {
+            'wijhars_name': _('Wybierz WIJHARS')
+        }
+
+
+class TypeForm(forms.ModelForm):
+    def __init__(self, mode, *args, **kwargs):
+        self.mode = mode
+        super(TypeForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Type
+        fields = '__all__'
+        labels = {
+            'name': _('nazwa'),
+        }
+
+
+class FindTypes(forms.ModelForm):
+    class Meta:
+        model = FindType
+        fields = '__all__'
+        labels = {
+            'type_name': _('Wybierz typ badania')
+        }
+
+
+class ResearchStatusForm(forms.ModelForm):
+    def __init__(self, mode, *args, **kwargs):
+        self.mode = mode
+        super(ResearchStatusForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = ResearchStatus
+        fields = '__all__'
+        labels = {
+            'name': _('nazwa'),
+        }
+
+
+class FindResearchStatuses(forms.ModelForm):
+    class Meta:
+        model = FindResearchStatus
+        fields = '__all__'
+        labels = {
+            'research_status_name': _('Wybierz status badań')
+        }
+
+
+class MetodAndNormForm(forms.ModelForm):
+    def __init__(self, mode, *args, **kwargs):
+        self.mode = mode
+        super(MetodAndNormForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = MetodAndNorm
+        fields = '__all__'
+        labels = {
+            'name': _('nazwa'),
+        }
+
+
+class FindMetodAndNorms(forms.ModelForm):
+    class Meta:
+        model = FindMetodAndNorm
+        fields = '__all__'
+        labels = {
+            'metod_and_norm_name': _('Wybierz metode/norme badania')
+        }

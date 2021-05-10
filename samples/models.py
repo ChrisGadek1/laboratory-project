@@ -16,6 +16,16 @@ class WIJHARS(models.Model):
         return u'%s' % self.name
 
 
+class FindWIJHARS(models.Model):
+    wijhars_name = models.ForeignKey(WIJHARS, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "%s" % self.wijhars_name
+
+    def __unicode__(self):
+        return u'%s' % self.wijhars_name
+
+
 class ControlType(models.Model):
     name = models.CharField(max_length=100)
 
@@ -24,6 +34,16 @@ class ControlType(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.name
+
+
+class FindControlType(models.Model):
+    control_type_name = models.ForeignKey(ControlType, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "%s" % self.control_type_name
+
+    def __unicode__(self):
+        return u'%s' % self.control_type_name
 
 
 class MetodAndNorm(models.Model):
@@ -36,6 +56,16 @@ class MetodAndNorm(models.Model):
         return u'%s' % self.name
 
 
+class FindMetodAndNorm(models.Model):
+    metod_and_norm_name = models.ForeignKey(MetodAndNorm, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "%s" % self.metod_and_norm_name
+
+    def __unicode__(self):
+        return u'%s' % self.metod_and_norm_name
+
+
 class Type(models.Model):
     name = models.CharField(max_length=100)
 
@@ -44,6 +74,16 @@ class Type(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.name
+
+
+class FindType(models.Model):
+    type_name = models.ForeignKey(Type, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "%s" % self.type_name
+
+    def __unicode__(self):
+        return u'%s' % self.type_name
 
 
 class DeliveryWay(models.Model):
@@ -56,6 +96,16 @@ class DeliveryWay(models.Model):
         return u'%s' % self.name
 
 
+class FindDeliveryWay(models.Model):
+    delivery_way_name = models.ForeignKey(DeliveryWay, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "%s" % self.delivery_way_name
+
+    def __unicode__(self):
+        return u'%s' % self.delivery_way_name
+
+
 class ResearchStatus(models.Model):
     name = models.CharField(max_length=100)
 
@@ -66,7 +116,21 @@ class ResearchStatus(models.Model):
         return u'%s' % self.name
 
 
+class FindResearchStatus(models.Model):
+    research_status_name = models.ForeignKey(ResearchStatus, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return "%s" % self.research_status_name
+
+    def __unicode__(self):
+        return u'%s' % self.research_status_name
+
+
 class Sampling(models.Model):
+
+    class Meta:
+        permissions = [('can_operate_on_sampling', 'Can add/edit/delete sampling')]
+
     number = models.IntegerField()
     code = models.CharField(max_length=100)
     WIJHARS = models.ForeignKey(WIJHARS, on_delete=models.PROTECT, blank=False)

@@ -23,6 +23,7 @@
             <button id="login-button" class="btn-primary" onclick="location.href = 'http://127.0.0.1:8000/accounts/login';">Login</button>
         {% endif %}
         {% block nav %}
+
         {% endblock %}
     </nav>
     <div id="main-block">
@@ -31,5 +32,14 @@
         {% endblock %}
     </div>
 
+    {% if not user.is_authenticated %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
 </body>
 </html>

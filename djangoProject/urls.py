@@ -20,6 +20,11 @@ from django.urls import path, include
 from app.views import main_site
 from reports.views import choose_mode, add_template, generate_report
 from samples.views import sample_add, research_add, sample_menu, sample_search
+from csvs.views import generate_csv, choose_mode_csv, read_csv
+from account.views import password_change_view
+from samples.views import Control_types_add, additional_data_view,\
+    Delivery_way_add, Metod_and_norm_add, Research_status_add, Type_add,\
+    Wijhars_add
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +36,16 @@ urlpatterns = [
     path('research_add/', research_add),
     path('choose_mode/', choose_mode),
     path('choose_mode/add_template', add_template),
-    path('choose_mode/generate_report/', generate_report)
+    path('choose_mode/generate_report/', generate_report),
+    path('choose_mode_csv/', choose_mode_csv),
+    path('choose_mode_csv/csv/', generate_csv),
+    path('choose_mode_csv/read_csv/', read_csv),
+    path('account/password_change/', password_change_view),
+    path('additional_data/', additional_data_view),
+    path('additional_data/Control_type/', Control_types_add),
+    path('additional_data/Delivery_way/', Delivery_way_add),
+    path('additional_data/Metod_and_norm/', Metod_and_norm_add),
+    path('additional_data/Research_status/', Research_status_add),
+    path('additional_data/Type/', Type_add),
+    path('additional_data/Wijhars/', Wijhars_add),
 ]

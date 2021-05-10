@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     # own
 
     'samples',
+    'csvs',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +77,7 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'account.Account'
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 
@@ -133,3 +136,5 @@ LOGOUT_REDIRECT_URL = '/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+SESSION_COOKIE_AGE = 900
+SESSION_SAVE_EVERY_REQUEST = True

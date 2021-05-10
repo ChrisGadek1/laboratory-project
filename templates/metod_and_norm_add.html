@@ -1,0 +1,253 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+    <title> Metody/normy </title>
+    <style>
+        .form-part-desc{
+            font-size: 26px;
+        }
+
+        #sample-form{
+            width: 65vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+
+    .sample-field-wrapper{
+        margin: 15px 15px 30px 15px;
+        display: block;
+        width: 220px;
+    }
+
+    .sample-field-wrapper-form2{
+        margin: 15px 15px 30px 20%;
+        display: block;
+        width: 220px;
+    }
+
+    .sample-field-wrapper > *, .sample-field-wrapper-form2 > *{
+        text-align: left;
+        display: block;
+        width: 100%;
+    }
+
+    textarea{
+        max-height: 70px;
+    }
+
+    #sample-dates-form > *{
+        display: inline-block;
+    }
+
+    #sample-dates-form{
+        border-top: #2b29ff 1px solid;
+        border-bottom: #2b29ff 1px solid;
+    }
+
+    @media(max-width: 870px){
+        #divider-form1-inner{
+            width: 0px;
+        }
+    }
+
+    @media(min-width: 871px){
+        #divider-form1-inner{
+            width: 1px;
+            height: 280px;
+            display: inline-block;
+            background-color: #2b29ff;
+        }
+        .form1-last-part-inner{
+            display: inline-block;
+        }
+    }
+
+
+    .divider{
+        width: 90%;
+        height: 3px;
+        background-color: #2b29ff;
+        margin: 30px auto 30px auto;
+    }
+
+    .form-part-title{
+        margin-top: 20px;
+        text-align: left;
+        margin-left: 20%;
+        font-size: 20px;
+    }
+
+    .form-inner-wrapper > * > *{
+        display: inline-block;
+    }
+
+    .form-inner-wrapper > *{
+        display: inline-block;
+    }
+
+    .form-inner-wrapper > #bordered-div{
+        border-bottom: #2b29ff 1px solid;
+    }
+
+    .submit-button{
+        font-size: 24px;
+    }
+
+    #find-sample{
+        display: none;
+    }
+
+    #errors *{
+        list-style: none;
+        text-align: left;
+        color: red;
+        font-size: 20px;
+    }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+{% if "samples.can_operate_on_sampling" in perms %}
+
+<section id="sample-form">
+    <form id="add_sample" class="login_container" method="POST"> {% csrf_token %}
+
+        <div class="form-part-desc"> 0. Wybór trybu </div>
+        <div class="sample-field-wrapper" onchange="mode_change()">
+            <label for="{{ form0.mode_name.id_for_label }}" > {{ form0.mode_name.label }} </label>
+            {{ form0.mode_name }}
+        </div>
+        <div class="sample-field-wrapper" id="find-sample">
+            <label for="{{ form2.metod_and_norm_name.id_for_label }}">{{ form2.metod_and_norm_name.label }} </label>
+                {{ form2.metod_and_norm_name  }}
+        </div>
+        <input id="reset-form" type="reset" name="reset" onclick="resetForm()" value="Resetuj formularz" class="btn-primary submit-button">
+
+        <script>
+            window.onload = function(){
+                mode_change();
+                setSubmitButtonText();
+                document.getElementById("id_mode_name").addEventListener("change", () => {
+                    setSubmitButtonText();
+                });
+                document.getElementById("find-sample").addEventListener("change", () => {
+                    getData();
+                })
+            }
+
+            function setSubmitButtonText() {
+                let text = document.getElementById("id_mode_name").value;
+                if(text == "Add"){
+                    document.getElementById("submit-button").value = "Dodaj";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return')")
+
+                }
+                else if(text == "Edit"){
+                    document.getElementById("submit-button").value = "Modyfikuj";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return confirm('Uwaga! modyfikując ten Metode/norme, zmieniasz go w bazie bezpowrotnie. Czy chcesz kontynuować?')")
+                }
+                else{
+                    document.getElementById("submit-button").value = "Usuń";
+                    document.getElementById("add_sample").setAttribute("onsubmit", "return confirm('Uwaga! Usuwanie danych z bazy jest bezpowrotne. Czy chcesz kontynuować?')")
+
+                }
+            }
+
+            function resetForm() {
+                document.getElementById("find-sample").style.display = "none";
+                document.getElementById("id_metod_and_norm_name").selectedIndex = 0;
+                document.getElementById("id_metod_and_norm_name").disabled = true;
+                document.getElementById("find-sample").style.display = "none";
+                document.getElementById("submit-button").value = "Dodaj";
+                document.getElementById("id_name").value = "";
+            }
+
+            function getData() {
+                if(document.getElementById("id_metod_and_norm_name").value === ""){
+                    return;
+                }
+
+                if(document.getElementById("id_mode_name").value !== "Add") {
+
+                    let csrfValue = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                    fetch("", {
+                        method: "Post",
+                        headers: {
+                            "X-CSRFToken": csrfValue,
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                        body: document.getElementById("id_metod_and_norm_name").value,
+
+                    }).then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                        for (var x in data) {
+                            if (document.getElementById("id_" + x))
+                                document.getElementById("id_" + x).value = data[x];
+                        }
+                    }).catch((error) => {
+                        console.error("Error", error);
+                    })
+                }
+            }
+
+            document.getElementById("id_metod_and_norm_name").disabled = true;
+
+
+            function mode_change(){
+                var text = document.getElementById("id_mode_name").value;
+                if(text === "Add"){
+                    document.getElementById("find-sample").style.display = "none";
+                    document.getElementById("id_metod_and_norm_name").selectedIndex = 0;
+                    document.getElementById("id_metod_and_norm_name").disabled = true;
+                }
+                else {
+                    document.getElementById("find-sample").style.display = "block";
+                    document.getElementById("id_metod_and_norm_name").disabled = false;
+                }
+            }
+
+            {% if messages %}
+                alert("Wystąpiły błędy przy wypełnianiu formularza. Informacje będą podane na górze formularza")
+            {% endif %}
+
+            {% if action == 'Add' %}
+                alert("Dodano metode/norme")
+            {% elif action == 'Edit' %}
+                alert("Zmodyfikowano metode/norme")
+            {% elif action == 'Delete' %}
+                alert("Usunięto metode/norme")
+            {% endif %}
+
+        </script>
+        {% if messages %}
+            <div id="errors">
+                <p id="error-p">Błędy w formularzu:</p>
+                {% for message in messages %}
+                    {{message}}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="divider"></div>
+        <div class="form-part-desc">1. Dane o metodzie/normie </div>
+        <div class="sample-field-wrapper">
+            <label for="{{ form1.name.id_for_label }}"> {{ form1.name.label }} </label>
+            {{ form1.name }}
+        </div>
+        <input id="submit-button" type="submit" value="zatwierdź" class="btn-primary submit-button"/>
+    </form>
+</section>
+
+
+{% else %}
+    Nie masz uprawnień, do modyfikowania próbek.
+{% endif %}
+{% endblock %}

@@ -114,6 +114,8 @@
 {% endblock %}
 
 {% block content %}
+{% if "samples.can_operate_on_sampling" in perms %}
+
 <section id="sample-form">
     <form id="add_sample" class="login_container" method="POST"> {% csrf_token %}
 
@@ -444,4 +446,7 @@
 </section>
 
 
+{% else %}
+        Nie masz uprawnień, do modyfikowania próbek.
+    {% endif %}
 {% endblock %}

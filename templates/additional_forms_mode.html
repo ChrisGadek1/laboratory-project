@@ -41,28 +41,30 @@
 
 {% block nav %}
 
-    <h3 style="text-align: center"> Strona Główna </h3>
+    <h3 style="text-align: center"> Operacje na dodatkowych danych </h3>
 
 {% endblock %}
 
 {% block content %}
-
     {% if user.must_change_password == False %}
         <section id="wrapper-logged">
-            <div class="main-button" onclick="location.href = 'sample'">
-                <p>Operacje na próbkach</p>
+            <div class="main-button" onclick="location.href = 'control_type'">
+                <p>Operacje na formularzu: Typy kontroli</p>
             </div>
-            <div class="main-button" onclick="location.href = 'research_add'">
-                <p>Operacje na badaniach</p>
+            <div class="main-button" onclick="location.href = 'Delivery_way'">
+                <p>Operacje na formularzu: Sposób dostarczenia </p>
             </div>
-            <div class="main-button" onclick="location.href = 'additional_data'">
-                <p>Edytuj pozostałe dane</p>
+            <div class="main-button" onclick="location.href = 'Metod_and_norm'">
+                <p>Operacje na formularzu: Metody i normy dostarczenia </p>
             </div>
-            <div class="main-button" onclick="location.href = 'choose_mode_csv'">
-            <p>Import/export csv</p>
+            <div class="main-button" onclick="location.href = 'Research_status'">
+                <p>Operacje na formularzu: Status badań </p>
             </div>
-            <div class="main-button" onclick="location.href = 'choose_mode'">
-                <p>Raporty</p>
+            <div class="main-button" onclick="location.href = 'Type'">
+            <p>Operacje na formularzu: Typ badań </p>
+            </div>
+            <div class="main-button" onclick="location.href = 'Wijhars'">
+                <p>Operacje na formularzu: Wijhars</p>
             </div>
         </section>
     {% else %}
