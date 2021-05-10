@@ -98,6 +98,8 @@ def generate_report(request, *args, **kwargs):
             if len(researches) > 0:
                 props = researches[0].__dict__.keys()
             insert_flag = False
+            result_type_sep = False
+            numerical_result = False
             columns = []
             cells = []
             rows_to_delete = []
@@ -108,6 +110,17 @@ def generate_report(request, *args, **kwargs):
                         for cell in row.cells:
                             if "{{init_researches}}" in cell.text:
                                 insert_flag = True
+                                result_type_sep = False
+                                rows_to_delete.append((table_v, row))
+                            elif "{{init_researches_num}}" in cell.text:
+                                insert_flag = True
+                                result_type_sep = True
+                                numerical_result = True
+                                rows_to_delete.append((table_v, row))
+                            elif "{{init_researches_char}}" in cell.text:
+                                insert_flag = True
+                                result_type_sep = True
+                                numerical_result = False
                                 rows_to_delete.append((table_v, row))
                     else:
                         cell_index = 0
@@ -128,6 +141,10 @@ def generate_report(request, *args, **kwargs):
                         rows_to_delete.append((table_v, row))
                         #print(table_v._element.xml)
                         for it, research in enumerate(researches, start=1):
+                            if result_type_sep and (numerical_result and not research.result.isnumeric()):
+                                continue
+                            elif result_type_sep and (not numerical_result and research.result.isnumeric()):
+                                continue
                             row_tmp = table_v.add_row()
                             new_row = row_tmp.cells
                             cells_copy = copy.deepcopy(cells)
@@ -163,6 +180,8 @@ def generate_report(request, *args, **kwargs):
                                     new_row[i-1].text = text
 
                         insert_flag = False
+                        result_type_sep = False
+                        numerical_result = False
                         columns = []
                         cells = []
                         break
