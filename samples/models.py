@@ -7,6 +7,9 @@ from datetime import date
 # from app import forms
 
 class WIJHARS(models.Model):
+    class Meta:
+        permissions = [('can_operate_on_WIJHARS', 'Can add/edit/delete WIJHARS')]
+
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -27,6 +30,10 @@ class FindWIJHARS(models.Model):
 
 
 class ControlType(models.Model):
+
+    class Meta:
+        permissions = [('can_operate_on_ControlType', 'Can add/edit/delete ControlType')]
+
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -47,6 +54,10 @@ class FindControlType(models.Model):
 
 
 class MetodAndNorm(models.Model):
+
+    class Meta:
+        permissions = [('can_operate_on_MetodAndNorm', 'Can add/edit/delete MetodAndNorm')]
+
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -67,6 +78,10 @@ class FindMetodAndNorm(models.Model):
 
 
 class Type(models.Model):
+
+    class Meta:
+        permissions = [('can_operate_on_Type', 'Can add/edit/delete Type')]
+
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -87,6 +102,10 @@ class FindType(models.Model):
 
 
 class DeliveryWay(models.Model):
+
+    class Meta:
+        permissions = [('can_operate_on_DeliveryWay', 'Can add/edit/delete DeliveryWay')]
+
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -107,6 +126,10 @@ class FindDeliveryWay(models.Model):
 
 
 class ResearchStatus(models.Model):
+
+    class Meta:
+        permissions = [('can_operate_on_ResearchStatus', 'Can add/edit/delete ResearchStatus')]
+
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -184,6 +207,10 @@ class Sampling(models.Model):
 
 
 class Research(models.Model):
+
+    class Meta:
+        permissions = [('can_operate_on_Research', 'Can add/edit/delete Research')]
+
     sampling = models.ForeignKey(Sampling, on_delete=models.PROTECT)
     name = models.CharField(max_length=300)
     marking = models.CharField(max_length=300)

@@ -110,12 +110,18 @@
         font-size: 20px;
     }
 
+    #beautiful_text{
+        text-align: center;
+        font-size: 20px;
+        padding: 30px;
+        color: red;
+    }
+
     </style>
 {% endblock %}
 
 {% block content %}
-{% if "samples.can_operate_on_sampling" in perms %}
-
+{% if "samples.can_operate_on_ControlType" in perms %}
 <section id="sample-form">
     <form id="add_sample" class="login_container" method="POST"> {% csrf_token %}
 
@@ -248,6 +254,8 @@
 
 
 {% else %}
-    Nie masz uprawnień, do modyfikowania próbek.
+    <div id="beautiful_text">
+        Nie masz uprawnień, do modyfikowania typu kontroli.
+    </div>
 {% endif %}
 {% endblock %}

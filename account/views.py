@@ -7,8 +7,6 @@ from django.contrib.auth import password_validation
 
 def password_change_view(request, *args, **kwargs):
     username = Account.get_username(request.user)
-    print(username)
-    print(request.user.password)
     list = []
     error_message = {'error' : list}
 

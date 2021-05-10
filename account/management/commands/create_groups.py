@@ -5,7 +5,10 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
 
 GROUPS = ['laborant', 'admin', 'superadmin']
-PERMISSIONS = ['Can add/edit/delete sampling',]
+PERMISSIONS = ['Can add/edit/delete sampling', 'Can add/edit/delete WIJHARS', 'Can add/edit/delete ControlType',
+                'Can add/edit/delete MetodAndNorm', 'Can add/edit/delete Type', 'Can add/edit/delete DeliveryWay',
+                'Can add/edit/delete ResearchStatus',  'Can add/edit/delete Research',
+               ]
 
 
 class Command(BaseCommand):
