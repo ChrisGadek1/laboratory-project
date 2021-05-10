@@ -167,7 +167,7 @@ def research_add(request, *args, **kwargs):
             'samples_number': obj.samples_number,
             'result': obj.result,
             'start_date': obj.start_date,
-            'completion_date': obj.completion_date,
+            'research_completion_date': obj.research_completion_date,
             'status': obj.status_id,
             'uncertainty': obj.uncertainty,
             'summary_meet_requirements': obj.summary_meet_requirements,

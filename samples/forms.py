@@ -147,7 +147,7 @@ class ResearchForm(forms.ModelForm):
             'samples_number': _('Liczba próbek do badania'),
             'result': _('Wynik badania'),
             'start_date': _('Data rozpoczęcia'),
-            'completion_date': _('Data zakończenia'),
+            'research_completion_date': _('Data zakończenia'),
             'status': _('Status metody'),
             'uncertainty': _('Niepewność, LOD, LOQ'),
             'summary_meet_requirements': _('Czy próbka spełnia wymagania?'),
@@ -158,7 +158,7 @@ class ResearchForm(forms.ModelForm):
 
         widgets = {
             'start_date': DateInput,
-            'completion_date': DateInput,
+            'research_completion_date': DateInput,
         }
 
     def clean_name(self, *args, **kwargs):
