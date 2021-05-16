@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from docx.oxml.ns import qn
+from datetime import datetime
+from docx.shared import Pt
 
 from samples.forms import SampleForm, ResearchForm
 import os
@@ -45,11 +47,6 @@ def add_template(request, *args, **kwargs):
 
 def generate_report(request, *args, **kwargs):
     if request.user.is_authenticated:
-
-        def remove_row(table, row):
-            tbl = table._tbl
-            tr = row._tr
-            tbl.remove(tr)
 
         context = {}
         context["samples"] = Sampling.objects.all()
@@ -203,7 +200,93 @@ def generate_time_report(request, *args, **kwargs):
     if request.user.is_authenticated:
         context = {}
         if request.method == "POST":
-            pass
+            document = Document("time_report/raport_czasowy.docx")
+            begin_date = request.POST.get("input-date", "")
+            end_date = request.POST.get("end-date", "")
+            samples = Sampling.objects.all()
+            researches = Research.objects.all()
+
+            if begin_date == '':
+                context = {"error_begin": "To pole nie może być puste"}
+                return render(request, 'reports/generate_time_report.html', context)
+            if end_date == '':
+                context = {"error_end": "To pole nie może być puste"}
+                return render(request, 'reports/generate_time_report.html', context)
+
+            def filter_date_samples(date1):
+                if date1.delivery_date is None:
+                    return False
+                else:
+                    date1_obj = datetime.strptime(str(date1.delivery_date), "%Y-%m-%d")
+                    end_date_obj = datetime.strptime(str(end_date), "%Y-%m-%d")
+                    begin_date_obj = datetime.strptime(str(begin_date), "%Y-%m-%d")
+                    return begin_date_obj <= date1_obj <= end_date_obj
+
+            def filter_date_researches(date1):
+                if date1.start_date is None:
+                    return False
+                else:
+                    date1_obj = datetime.strptime(str(date1.start_date), "%Y-%m-%d")
+                    end_date_obj = datetime.strptime(str(end_date), "%Y-%m-%d")
+                    begin_date_obj = datetime.strptime(str(begin_date), "%Y-%m-%d")
+                    return begin_date_obj <= date1_obj <= end_date_obj
+
+            samples = list(filter(filter_date_samples, list(samples)))
+            researches = list(filter(filter_date_researches, list(researches)))
+            data_samples = {}
+            for sample in samples:
+                if data_samples.get(sample.type) is None:
+                    data_samples[sample.type] = 1
+                else:
+                    data_samples[sample.type] += 1
+
+            data_researches = {}
+            for research in researches:
+                print(research.status)
+                if data_researches.get(research.status) is None:
+                    data_researches[research.status] = 1
+                else:
+                    data_researches[research.status] += 1
+
+            def modify_cell(tcl, text):
+                tc = tcl._tc
+                tcPr = tc.tcPr
+                borders = OxmlElement('w:tcBorders')
+                border_list = ['w:left', 'w:right', 'w:top', 'w:bottom']
+                for border_element in border_list:
+                    element = OxmlElement(border_element)
+                    element.set(qn('w:val'), 'single')
+                    element.set(qn('w:sz'), '4')
+                    element.set(qn('w:space'), '0')
+                    element.set(qn('w:color'), '000000')
+                    borders.append(element)
+                tcPr.append(borders)
+                tcl.text = text
+
+            p = document.paragraphs[0]
+            p.text = str(p.text).replace("{{init_date}}", str(begin_date))
+            p.text = str(p.text).replace("{{end_date}}", str(end_date))
+            p.style.font.size = Pt(14)
+
+            for i, table_v in enumerate(document.tables, start=1):
+                if i == 1:
+                    for type_s, number in data_samples.items():
+                        row_tmp = table_v.add_row()
+                        new_row = row_tmp.cells
+                        modify_cell(new_row[0], str(type_s))
+                        modify_cell(new_row[1], str(number))
+                else:
+                    for type_s, number in data_researches.items():
+                        row_tmp = table_v.add_row()
+                        new_row = row_tmp.cells
+                        modify_cell(new_row[0], str(type_s))
+                        modify_cell(new_row[1], str(number))
+
+            document.save("time_report/report.docx")
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            response['Content-Disposition'] = 'attachment; filename=report.docx'
+            document.save(response)
+            return response
         return render(request, 'reports/generate_time_report.html', context)
     else:
         return render(request, 'main_not_logged.html', {})

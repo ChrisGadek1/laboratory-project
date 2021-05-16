@@ -20,19 +20,32 @@
         .data-field > *{
             margin: 5px;
         }
+        .error-info{
+            display: block;
+            text-align: center;
+            font-size: 12px;
+            color: red;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
     <section>
         <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="data-field">
                 <label for="input-date">Wybierz datę początkową</label>
                 <input type="date" name="input-date"/>
+                {% if error_begin %}
+                    <span class="error-info">{{ error_begin }}</span>
+                {% endif %}
             </div>
             <div class="data-field">
                 <label for="end-date">Wybierz datę końcową</label>
                 <input type="date" name="end-date"/>
+                {% if error_end %}
+                    <span class="error-info">{{ error_end }}</span>
+                {% endif %}
             </div>
             <input type="submit" value="Generuj" class="btn btn-primary">
         </form>
