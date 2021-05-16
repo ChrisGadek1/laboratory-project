@@ -197,3 +197,13 @@ def generate_report(request, *args, **kwargs):
         return render(request, 'reports/reports.html', context)
     else:
         return render(request, 'main_not_logged.html', {})
+
+
+def generate_time_report(request, *args, **kwargs):
+    if request.user.is_authenticated:
+        context = {}
+        if request.method == "POST":
+            pass
+        return render(request, 'reports/generate_time_report.html', context)
+    else:
+        return render(request, 'main_not_logged.html', {})

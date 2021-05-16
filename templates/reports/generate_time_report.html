@@ -1,0 +1,40 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+    <style>
+        section > form{
+            width: 65vw;
+            padding: 2vw;
+            background-color: #c8d4ff;
+            margin: 100px auto auto;
+            text-align: center;
+            border-radius: 20px;
+            -webkit-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+            box-shadow: 4px 7px 15px 0px rgba(0,0,0,0.75);
+        }
+        .data-field{
+            margin: 10px;
+
+        }
+        .data-field > *{
+            margin: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <form method="post" enctype="multipart/form-data">
+            <div class="data-field">
+                <label for="input-date">Wybierz datę początkową</label>
+                <input type="date" name="input-date"/>
+            </div>
+            <div class="data-field">
+                <label for="end-date">Wybierz datę końcową</label>
+                <input type="date" name="end-date"/>
+            </div>
+            <input type="submit" value="Generuj" class="btn btn-primary">
+        </form>
+    </section>
+{% endblock %}
