@@ -146,6 +146,8 @@ def generate_report(request, *args, **kwargs):
                             new_row = row_tmp.cells
                             cells_copy = copy.deepcopy(cells)
                             #word manipulation:
+                            requirement_columns = {"law": 1, "specification": 2, "producent": 3}
+                            requirement_number = 0
                             for i in range(len(columns)):
                                 tc = new_row[i]._tc
                                 tcPr = tc.tcPr
@@ -159,22 +161,24 @@ def generate_report(request, *args, **kwargs):
                                     element.set(qn('w:color'), '000000')
                                     borders.append(element)
                                 tcPr.append(borders)
-                                for replaceable in columns[i]:
+                                for j, replaceable in enumerate(columns[i]):
                                     if replaceable in props:
+                                        to_replace = " "
+                                        if replaceable == "requirements":
+                                            requirement_number += 1
+                                        if replaceable != "requirements" or requirement_columns[research.__dict__.get("requirementsType")] == requirement_number:
+                                            to_replace = research.__dict__.get(replaceable)
                                         text = cells_copy[i].text
-                                        new_row[i].text = text.replace("{{"+replaceable+"}}", str(research.__dict__.get(replaceable)))
+                                        if "{{" in text:
+                                            new_row[i].text = text.replace("{{"+replaceable+"}}", str(to_replace))
+                                        else:
+                                            new_row[i].text = str(to_replace)
                                         cells_copy[i].text = new_row[i].text
+
                                     elif replaceable == "incr":
                                         new_row[i].text = str(it)
                                     else:
                                         new_row[i].text = replaceable
-
-                            for i in range(len(new_row) - 1, 0, -1):
-                                if i > 0 and new_row[i].text == new_row[i-1].text:
-                                    text = new_row[i].text
-                                    new_row[i].text = ""
-                                    new_row[i].merge(new_row[i-1])
-                                    new_row[i-1].text = text
 
                         insert_flag = False
                         result_type_sep = False
@@ -242,7 +246,6 @@ def generate_time_report(request, *args, **kwargs):
 
             data_researches = {}
             for research in researches:
-                print(research.status)
                 if data_researches.get(research.status) is None:
                     data_researches[research.status] = 1
                 else:

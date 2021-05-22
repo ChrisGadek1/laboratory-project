@@ -153,7 +153,8 @@ class ResearchForm(forms.ModelForm):
             'summary_meet_requirements': _('Czy próbka spełnia wymagania?'),
             'summary_requirements_explains': _('Jeżeli nie spełnia, dlaczego'),
             'requirements': _('Wymagania wg'),
-            'unit': _('Jednostka')
+            'unit': _('Jednostka'),
+            'requirementsType': _('Rodzaj wymagań')
         }
 
         widgets = {

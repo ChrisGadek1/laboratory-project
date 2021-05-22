@@ -148,7 +148,6 @@ class FindResearchStatus(models.Model):
     def __unicode__(self):
         return u'%s' % self.research_status_name
 
-
 class Sampling(models.Model):
 
     class Meta:
@@ -224,6 +223,7 @@ class Research(models.Model):
     status = models.ForeignKey(ResearchStatus, on_delete=models.PROTECT)
     uncertainty = models.CharField(max_length=300)
     summary_meet_requirements = models.BooleanField()
+    requirementsType = models.CharField(max_length=200, choices=[('law', 'np.norm, przepisów prawa1'), ('specification','np.Specyfikacji jakościowej'), ('producent', 'np. oznakowania producenta...')])
     summary_requirements_explains = models.TextField(blank=True)
     requirements = models.TextField(blank=True, null=True)
     unit = models.CharField(blank=True, null=True, max_length=50)
