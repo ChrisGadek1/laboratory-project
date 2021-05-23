@@ -23,6 +23,7 @@ def sample_add(request, *args, **kwargs):
     form3 = ResearchForm(request.POST)
     form = SampleForm(data=request.POST, mode=form2["mode_name"].value())
 
+    contains_error = False
     action = 'None'
     if not request.is_ajax():
         if request.method == 'POST':
@@ -41,12 +42,14 @@ def sample_add(request, *args, **kwargs):
                     action = "Delete"
             else:
                 messages.error(request, form.errors)
+                contains_error = True
 
     contex = {
         "form0": form2,
         "form1": form,
         "form2": form3,
-        "action": action
+        "action": action,
+        "contains_error": contains_error
     }
 
     if request.is_ajax():
@@ -135,7 +138,6 @@ def research_add(request, *args, **kwargs):
     form2 = ChoiceAction(request.POST)
     form3 = FindResearch(request.POST)
     form = ResearchForm(data=request.POST, mode=form2["mode_name"].value())
-    print("test")
     action = 'None'
     if not request.is_ajax():
         if request.method == 'POST':
