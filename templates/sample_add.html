@@ -138,6 +138,9 @@
         <input id="reset-form" type="reset" name="reset" onclick="resetForm()" value="Resetuj formularz" class="btn-primary submit-button">
 
         <script>
+
+            var jak_po_indeksie_odwolac_sie_do_message = 0;
+
             window.onload = function(){
                 mode_change();
                 setSubmitButtonText();
@@ -241,6 +244,28 @@
             <div id="errors">
                 <p id="error-p">Błędy w formularzu:</p>
                 {% for message in messages %}
+                    <script>
+                        if(jak_po_indeksie_odwolac_sie_do_message == 1){
+                            console.log('{{message}}');
+                            console.log('{{ form2.sampling.id_for_label }}');
+                            console.log('{{ form2.sampling.id_for_label }}'.options);
+
+                            var searchtext = '{{message}}';
+                            var box = document.getElementById('{{ form2.sampling.id_for_label }}');
+                            for (var i = 0; i < box.options.length; ++i) {
+                                if (box.options[i].text === searchtext)
+                                    box.options[i].selected = true;
+                            }
+                            getData()
+                            jak_po_indeksie_odwolac_sie_do_message = 0;
+                        }
+
+                        if('{{ message }}' == 'Edycja próbki'){
+                            document.getElementById('{{ form0.mode_name.id_for_label  }}').value = 'Edit';
+                            jak_po_indeksie_odwolac_sie_do_message = 1;
+                        }
+
+                    </script>
                     {{message}}
                 {% endfor %}
             </div>

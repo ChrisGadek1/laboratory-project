@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import SampleForm, ResearchForm, ChoiceAction, FindResearch, ControlTypeForm, FindControlType,\
@@ -111,6 +111,14 @@ def sample_menu(request, *args, **kwargs):
 
 
 def sample_search(request, *args, **kwargs):
+
+    if request.is_ajax():
+        messages.info(request, "Edycja próbki")
+        messages.info(request, request.body.decode())
+        return JsonResponse({
+            'link': "/sample_add/"
+        }, status=200)
+
     if request.user.is_authenticated:
         filters = SampleForm.Meta.labels
         context = {

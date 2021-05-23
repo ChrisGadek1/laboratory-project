@@ -13,6 +13,6 @@ class CsvOptionsAction(forms.ModelForm):
         model = CsvOptions
         fields = '__all__'
         labels = {
-            'option': _('Którą rzecz chcesz zmodyfikować ?'),
+            'option': _('Którą rzecz chcesz pobrać z/dodać do bazy danych ?'),
             'mode': _('Wybierz opcje'),
         }

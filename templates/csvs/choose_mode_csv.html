@@ -35,22 +35,36 @@
 {% endblock %}
 
 {% block content %}
+
+    <script>
+        function mode_change(){
+            if(document.getElementById("{{ form.option.id_for_label }}").value === "All"){
+            document.getElementById("{{ form.mode.id_for_label}}").disabled = true;
+            }
+            else{
+                document.getElementById("{{ form.mode.id_for_label}}").disabled = false;
+            }
+        }
+
+        function activate_form(){
+            document.getElementById("{{ form.mode.id_for_label}}").disabled = false;
+        }
+    </script>
+
     <section>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div id="selects-div">
-                <div class="select-div">
+                <div class="select-div" onchange="mode_change()">
                     <label for="{{ form.option.id_for_label }}" > {{ form.option.label }} </label>
                         {{ form.option }}
                 </div>
                 <div class="select-div">
-
                     <label for="{{ form.mode.id_for_label }}">{{ form.mode.label }} </label>
                         {{ form.mode  }}
-
                 </div>
             </div>
-                <button type="submit" class="btn-primary"> Przejdź dalej </button>
+                <button type="submit" class="btn-primary" onclick="activate_form()"> Przejdź dalej </button>
         </form>
 
     </section>

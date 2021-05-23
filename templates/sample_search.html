@@ -43,6 +43,7 @@
             box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.75);
 
         }
+
     </style>
     <script>
         window.onload = function(){
@@ -128,7 +129,6 @@
                     if(!(added_filters.includes(key))){
                         if(!options.hasOwnProperty(key)){
                             options[key] = []
-                            console.log(key)
                             document.getElementById("select-"+key).innerHTML = ""
                         }
                         let flag = true
@@ -156,6 +156,24 @@
 
         }
 
+        function sample_on_click(elem){
+            let csrfValue = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            fetch("/sample_search/", {
+                method: "Post",
+                headers: {
+                    "X-CSRFToken": csrfValue,
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+                body: elem
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                window.location.replace(data['link']);
+            }).catch((error) => {
+                //
+            })
+        }
+
         function filter() {
             let wrapper = document.getElementById("result-codes-wrapper");
             wrapper.innerHTML = "";
@@ -169,8 +187,8 @@
             })
             filteredSamples.forEach((sample) => {
                 wrapper.innerHTML = wrapper.innerHTML + "" +
-                    "<div class='result-of-searching'>" +
-                        "<div>"+sample.code+"</div>" +
+                    "<div class='result-of-searching' " +
+                        "<div onclick='sample_on_click(\"" + sample.code + "\")'>" +sample.code+"</div>" +
                     "</div>"
             })
         }
@@ -208,6 +226,12 @@
             <div id="result-codes-wrapper">
 
             </div>
+
+            <form id="add_sample" class="login_container" method="POST" action="">
+                {% csrf_token %}
+            </form>
+
         </div>
+
     </section>
 {% endblock %}

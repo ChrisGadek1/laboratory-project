@@ -1,5 +1,6 @@
 import codecs
-
+import zipfile
+from io import BytesIO
 from django.contrib.messages import get_messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -53,14 +54,17 @@ def handle_object(mode, obj_name):
 
     if mode == 'Research':
         labels = ['sampling', 'name', 'marking', 'nutritional_value', 'specification',
-                  'ordinance', 'samples_number', 'result', 'start_date', 'completion_date',
-                  'status', 'uncertainty', 'summary_meet_requirements', 'summary_requirements_explains']
+                  'ordinance', 'samples_number', 'result', 'start_date', 'research_completion_date',
+                  'status', 'uncertainty', 'summary_meet_requirements', 'requirementsType', 'summary_requirements_explains',
+                  'requirements', 'unit']
         source = [obj_handle.sampling.code, obj_handle.name, obj_handle.marking, obj_handle.nutritional_value,
                   obj_handle.specification,
                   obj_handle.ordinance, obj_handle.samples_number, obj_handle.result, obj_handle.start_date,
-                  obj_handle.completion_date,
+                  obj_handle.research_completion_date,
                   obj_handle.status.name, obj_handle.uncertainty, obj_handle.summary_meet_requirements,
-                  obj_handle.summary_requirements_explains]
+                  obj_handle.requirementsType,
+                  obj_handle.summary_requirements_explains,
+                  obj_handle.requirements, obj_handle.unit]
 
     elif mode == "Sampling":
         labels = ['number', 'code', 'WIJHARS', 'assortment', 'admission_date', 'expiration_date',
@@ -71,12 +75,13 @@ def handle_object(mode, obj_name):
                   'sample_getter2_surname',
                   'sample_getter2_position', 'manufacturer', 'final_consumer', 'consumer_name',
                   'consumer_address',
-                  'order_number', 'mechanism_name_and_symbol', 'sample_delivery', 'is_OK', 'if_not_why']
+                  'order_number', 'mechanism_name_and_symbol', 'sample_delivery', 'is_OK', 'if_not_why',
+                  'recipient', 'agreement_number', 'collection_date', 'case_number', 'delivery_date',
+                  'type_of_package', 'batch_size', 'batch_number', 'batch_production_date']
         source = [obj_handle.number, obj_handle.code, obj_handle.WIJHARS.name, obj_handle.assortment,
                   obj_handle.admission_date, obj_handle.expiration_date, obj_handle.completion_date,
                   obj_handle.additional_comment, obj_handle.customer_name, obj_handle.size,
-                  obj_handle.condition,
-                  obj_handle.appeal_analysis, obj_handle.control_type.name,
+                  obj_handle.condition,obj_handle.appeal_analysis, obj_handle.control_type.name,
                   obj_handle.type.name, obj_handle.sampling_method.name, obj_handle.manufacturer_name,
                   obj_handle.manufacturer_address, obj_handle.sample_getter1_name,
                   obj_handle.sample_getter1_surname, obj_handle.sample_getter1_position,
@@ -84,7 +89,10 @@ def handle_object(mode, obj_name):
                   obj_handle.sample_getter2_position, obj_handle.manufacturer, obj_handle.final_consumer,
                   obj_handle.consumer_name, obj_handle.consumer_address,
                   obj_handle.order_number, obj_handle.mechanism_name_and_symbol, obj_handle.sample_delivery.name,
-                  obj_handle.is_OK, obj_handle.if_not_why]
+                  obj_handle.is_OK, obj_handle.if_not_why,
+                  obj_handle.recipient, obj_handle.agreement_number, obj_handle.collection_date, obj_handle.case_number,
+                  obj_handle.delivery_date, obj_handle.type_of_package, obj_handle.batch_size,
+                  obj_handle.batch_number, obj_handle.batch_production_date]
 
     elif mode == 'Type' or mode == 'Wijhars' or mode == 'Delivery Way' or \
          mode == 'Control type' or mode == 'Metod and norm' or mode == 'Research status':
@@ -134,35 +142,49 @@ def generate_csv(request, *args, **kwargs):
 
         if request.method == "POST":
 
-            file_name = "baza_danych_cala_kopia.csv"
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename=' + file_name
-            response.write(codecs.BOM_UTF8)
-            writer = csv.writer(response, delimiter=';')
-            writer.writerow('')
-
             if mode == 'All':
-                for object_type in context:
-                    objects = context[object_type]
-                    for obj_name in objects.iterator():
-                        obj_handle, labels, source = handle_object(object_type, obj_name)
+                zipped_file = BytesIO()
+                with zipfile.ZipFile(zipped_file, 'a', zipfile.ZIP_DEFLATED) as zipped:
 
-                        writer.writerow(['Marker#', object_type])
-                        for i in range(len(labels)):
-                            writer.writerow([labels[i], source[i]])
-                        writer.writerow(['Marker#end', object_type])
+                    for object_type in context:
+                        file_name = object_type + ".csv"
+                        with open(file_name, 'w+', newline='', encoding='utf-8') as csv_data:
+
+                            writer = csv.writer(csv_data, delimiter=';')
+                            writer.writerow('')
+
+                            objects = context[object_type]
+
+                            for obj_name in objects.iterator():
+                                obj_handle, labels, source = handle_object(object_type, obj_name)
+
+                                for i in range(len(labels)):
+                                    writer.writerow([labels[i], source[i]])
+                                writer.writerow("")
+
+                            csv_data.seek(0)
+                            zipped.writestr("{}.csv".format(object_type), csv_data.read())
+
+                zipped_file.seek(0)
+                response = HttpResponse(zipped_file, content_type='application/octet-stream')
+                response['Content-Disposition'] = 'attachment; filename=kopia_calej_bazy.zip'
+
             else:
-
                 obj_handle, labels, source = handle_object(mode, request.POST.get("obj_position", ""))
 
-                if mode != 'All':
-                    if mode == 'Sampling':
-                        file_name = mode + "_" + obj_handle.code + ".csv"
-                    elif mode == 'Error':
-                        file_name = "Error.csv"
-                    else:
-                        file_name = mode + "_" + obj_handle.name + ".csv"
-                    response['Content-Disposition'] = 'attachment; filename=' + file_name
+                response = HttpResponse(content_type='text/csv')
+                response.write(u'\ufeff'.encode('utf8'))
+                writer = csv.writer(response, delimiter=';')
+                writer.writerow('')
+
+                if mode == 'Sampling':
+                    file_name = mode + "_" + obj_handle.code + ".csv"
+                elif mode == 'Error':
+                    file_name = "Error.csv"
+                else:
+                    file_name = mode+".csv"
+
+                response['Content-Disposition'] = 'attachment; filename=' + file_name
 
                 for i in range(len(labels)):
                     writer.writerow([labels[i], source[i]])
@@ -225,9 +247,9 @@ def take_data_into_object(mode, dict):
                 obj.start_date = datetime.strptime(dict['start_date'], '%Y-%m-%d')
 
             try:
-                obj.completion_date = datetime.strptime(dict['completion_date'], '%d.%m.%Y')
+                obj.research_completion_date = datetime.strptime(dict['research_completion_date'], '%d.%m.%Y')
             except ValueError as error:
-                obj.completion_date = datetime.strptime(dict['completion_date'], '%Y-%m-%d')
+                obj.research_completion_date = datetime.strptime(dict['research_completion_date'], '%Y-%m-%d')
 
             obj.status = ResearchStatus.objects.get(name=dict['status'])
             obj.uncertainty = dict['uncertainty']
@@ -313,14 +335,17 @@ def read_csv(request, *args, **kwargs):
     if request.method == "POST":
         if request.FILES:
             file_reader = csv.reader(codecs.iterdecode(request.FILES['file_input'], 'utf-8', errors='replace'), delimiter=';')
+
+            to_first_data = 0
             dict = {}
             for row in file_reader:
-                if row[0] == "Marker#end":
-                    take_data_into_object(dict['Marker#'], dict)
-                    dict = {}
-                    continue
-                if len(row) > 1:
+                print(row)
+                if row:
                     dict[row[0]] = row[1]
+                    to_first_data = 1
+                elif to_first_data:
+                    take_data_into_object(mode, dict)
+                    dict = {}
 
     context = {}
     if request.user.is_authenticated:

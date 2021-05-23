@@ -148,6 +148,7 @@ class FindResearchStatus(models.Model):
     def __unicode__(self):
         return u'%s' % self.research_status_name
 
+
 class Sampling(models.Model):
 
     class Meta:
