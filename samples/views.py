@@ -6,7 +6,7 @@ from .forms import SampleForm, ResearchForm, ChoiceAction, FindResearch, Control
     MetodAndNormForm, FindMetodAndNorms
 from .models import Sampling, Research, ControlType, DeliveryWay, WIJHARS, Type, ResearchStatus, MetodAndNorm
 from django.contrib import messages
-
+from .utils import add_to_database, add_others_to_database
 
 # Create your views here.
 
@@ -19,30 +19,7 @@ def main_site(request, *args, **kwargs):
 
 
 def sample_add(request, *args, **kwargs):
-    form2 = ChoiceAction(request.POST)
-    form3 = ResearchForm(request.POST)
-    form = SampleForm(data=request.POST, mode=form2["mode_name"].value())
-
-    contains_error = False
-    action = 'None'
-    if not request.is_ajax():
-        if request.method == 'POST':
-            if form.is_valid():
-                if form2['mode_name'].value() == "Add":
-                    form.save()
-                    action = "Add"
-                elif form2['mode_name'].value() == "Edit":
-                    obj = Sampling.objects.get(number=form['number'].value())
-                    form = SampleForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
-                    form.save()
-                    action = "Edit"
-                else:
-                    obj = Sampling.objects.get(number=form['number'].value())
-                    obj.delete()
-                    action = "Delete"
-            else:
-                messages.error(request, form.errors)
-                contains_error = True
+    contains_error, action, form2, form3, form = add_to_database(request, SampleForm, ResearchForm, Sampling, 'number')
 
     contex = {
         "form0": form2,
@@ -135,28 +112,7 @@ def sample_search(request, *args, **kwargs):
 
 
 def research_add(request, *args, **kwargs):
-    form2 = ChoiceAction(request.POST)
-    form3 = FindResearch(request.POST)
-    form = ResearchForm(data=request.POST, mode=form2["mode_name"].value())
-    action = 'None'
-    if not request.is_ajax():
-        if request.method == 'POST':
-            if form.is_valid():
-                if form2['mode_name'].value() == "Add":
-                    form.save()
-                    action = 'Add'
-                elif form2['mode_name'].value() == "Edit":
-                    obj = Research.objects.get(name=form["name"].value())
-                    form = ResearchForm(mode=form2["mode_name"].value(), data=request.POST, instance=obj)
-                    form.save()
-                    action = 'Edit'
-                else:
-                    obj = Research.objects.get(name=form["name"].value())
-                    obj.delete()
-                    action = 'Delete'
-            else:
-                messages.error(request, form.errors)
-
+    contains_error, action, form2, form3, form = add_to_database(request, ResearchForm, FindResearch, Research, 'name')
     contex = {
         "form0": form2,
         "form2": form,
@@ -200,40 +156,9 @@ def additional_data_view(request, *args, **kwargs):
 
 
 def Control_types_add(request, *args, **kwargs):
-    form2 = ChoiceAction(request.POST)
-    form = ControlTypeForm(data=request.POST, mode=form2["mode_name"].value())
-    form3 = FindControlType(request.POST)
-    action = 'None'
-    if not request.is_ajax():
-        if request.method == 'POST':
-            if form.is_valid():
-                if form2['mode_name'].value() == "Add":
-                    form.save()
-                    action = "Add"
-                elif form2['mode_name'].value() == "Edit":
-                    obj = ControlType.objects.get(id=form3['control_type_name'].value())
-                    form = ControlTypeForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
-                    form.save()
-                    action = "Edit"
-                else:
-                    obj = ControlType.objects.get(id=form3['control_type_name'].value())
-                    obj.delete()
-                    action = "Delete"
-            else:
-                messages.error(request, form.errors)
-
-    contex = {
-        "form0": form2,
-        "form1": form,
-        "form2": form3,
-        "action": action
-    }
-    if request.is_ajax():
-        idx = request.body.decode()
-        obj = ControlType.objects.get(id=idx)
-        return JsonResponse({
-            'name': obj.name,
-        }, status=200)
+    json_response, contex = add_others_to_database(request, ControlTypeForm, FindControlType, ControlType, 'control_type_name')
+    if json_response:
+        return json_response
     if request.user.is_authenticated:
         return render(request, 'control_type_add.html', contex)
     else:
@@ -241,40 +166,9 @@ def Control_types_add(request, *args, **kwargs):
 
 
 def Delivery_way_add(request, *args, **kwargs):
-    form2 = ChoiceAction(request.POST)
-    form = DeliveryWayForm(data=request.POST, mode=form2["mode_name"].value())
-    form3 = FindDeliveryWays(request.POST)
-    action = 'None'
-    if not request.is_ajax():
-        if request.method == 'POST':
-            if form.is_valid():
-                if form2['mode_name'].value() == "Add":
-                    form.save()
-                    action = "Add"
-                elif form2['mode_name'].value() == "Edit":
-                    obj = DeliveryWay.objects.get(id=form3['delivery_way_name'].value())
-                    form = DeliveryWayForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
-                    form.save()
-                    action = "Edit"
-                else:
-                    obj = DeliveryWay.objects.get(id=form3['delivery_way_name'].value())
-                    obj.delete()
-                    action = "Delete"
-            else:
-                messages.error(request, form.errors)
-
-    contex = {
-        "form0": form2,
-        "form1": form,
-        "form2": form3,
-        "action": action
-    }
-    if request.is_ajax():
-        idx = request.body.decode()
-        obj = DeliveryWay.objects.get(id=idx)
-        return JsonResponse({
-            'name': obj.name,
-        }, status=200)
+    json_response, contex = add_others_to_database(request, DeliveryWayForm, FindDeliveryWays, DeliveryWay, 'delivery_way_name')
+    if json_response:
+        return json_response
     if request.user.is_authenticated:
         return render(request, 'delivery_way_add.html', contex)
     else:
@@ -282,40 +176,9 @@ def Delivery_way_add(request, *args, **kwargs):
 
 
 def Metod_and_norm_add(request, *args, **kwargs):
-    form2 = ChoiceAction(request.POST)
-    form = MetodAndNormForm(data=request.POST, mode=form2["mode_name"].value())
-    form3 = FindMetodAndNorms(request.POST)
-    action = 'None'
-    if not request.is_ajax():
-        if request.method == 'POST':
-            if form.is_valid():
-                if form2['mode_name'].value() == "Add":
-                    form.save()
-                    action = "Add"
-                elif form2['mode_name'].value() == "Edit":
-                    obj = MetodAndNorm.objects.get(id=form3['metod_and_norm_name'].value())
-                    form = MetodAndNormForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
-                    form.save()
-                    action = "Edit"
-                else:
-                    obj = MetodAndNorm.objects.get(id=form3['metod_and_norm_name'].value())
-                    obj.delete()
-                    action = "Delete"
-            else:
-                messages.error(request, form.errors)
-
-    contex = {
-        "form0": form2,
-        "form1": form,
-        "form2": form3,
-        "action": action
-    }
-    if request.is_ajax():
-        idx = request.body.decode()
-        obj = MetodAndNorm.objects.get(id=idx)
-        return JsonResponse({
-            'name': obj.name,
-        }, status=200)
+    json_response, contex = add_others_to_database(request, MetodAndNormForm, FindMetodAndNorms,MetodAndNorm, 'metod_and_norm_name')
+    if json_response:
+        return json_response
     if request.user.is_authenticated:
         return render(request, 'metod_and_norm_add.html', contex)
     else:
@@ -323,40 +186,9 @@ def Metod_and_norm_add(request, *args, **kwargs):
 
 
 def Research_status_add(request, *args, **kwargs):
-    form2 = ChoiceAction(request.POST)
-    form = ResearchStatusForm(data=request.POST, mode=form2["mode_name"].value())
-    form3 = FindResearchStatuses(request.POST)
-    action = 'None'
-    if not request.is_ajax():
-        if request.method == 'POST':
-            if form.is_valid():
-                if form2['mode_name'].value() == "Add":
-                    form.save()
-                    action = "Add"
-                elif form2['mode_name'].value() == "Edit":
-                    obj = ResearchStatus.objects.get(id=form3['research_status_name'].value())
-                    form = ResearchStatusForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
-                    form.save()
-                    action = "Edit"
-                else:
-                    obj = ResearchStatus.objects.get(id=form3['research_status_name'].value())
-                    obj.delete()
-                    action = "Delete"
-            else:
-                messages.error(request, form.errors)
-
-    contex = {
-        "form0": form2,
-        "form1": form,
-        "form2": form3,
-        "action": action
-    }
-    if request.is_ajax():
-        idx = request.body.decode()
-        obj = ResearchStatus.objects.get(id=idx)
-        return JsonResponse({
-            'name': obj.name,
-        }, status=200)
+    json_response, contex = add_others_to_database(request, ResearchStatusForm, FindResearchStatuses,ResearchStatus, 'research_status_name')
+    if json_response:
+        return json_response
     if request.user.is_authenticated:
         return render(request,'research_status_add.html', contex)
     else:
@@ -364,40 +196,9 @@ def Research_status_add(request, *args, **kwargs):
 
 
 def Type_add(request, *args, **kwargs):
-    form2 = ChoiceAction(request.POST)
-    form = TypeForm(data=request.POST, mode=form2["mode_name"].value())
-    form3 = FindTypes(request.POST)
-    action = 'None'
-    if not request.is_ajax():
-        if request.method == 'POST':
-            if form.is_valid():
-                if form2['mode_name'].value() == "Add":
-                    form.save()
-                    action = "Add"
-                elif form2['mode_name'].value() == "Edit":
-                    obj = Type.objects.get(id=form3['type_name'].value())
-                    form = TypeForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
-                    form.save()
-                    action = "Edit"
-                else:
-                    obj = Type.objects.get(id=form3['type_name'].value())
-                    obj.delete()
-                    action = "Delete"
-            else:
-                messages.error(request, form.errors)
-
-    contex = {
-        "form0": form2,
-        "form1": form,
-        "form2": form3,
-        "action": action
-    }
-    if request.is_ajax():
-        idx = request.body.decode()
-        obj = Type.objects.get(id=idx)
-        return JsonResponse({
-            'name': obj.name,
-        }, status=200)
+    json_response, contex = add_others_to_database(request, TypeForm, FindTypes,Type, 'type_name')
+    if json_response:
+        return json_response
     if request.user.is_authenticated:
         return render(request, 'type_add.html', contex)
     else:
@@ -405,40 +206,9 @@ def Type_add(request, *args, **kwargs):
 
 
 def Wijhars_add(request, *args, **kwargs):
-    form2 = ChoiceAction(request.POST)
-    form = WIJHARSForm(data=request.POST, mode=form2["mode_name"].value())
-    form3 = FindWIJHARSs(request.POST)
-    action = 'None'
-    if not request.is_ajax():
-        if request.method == 'POST':
-            if form.is_valid():
-                if form2['mode_name'].value() == "Add":
-                    form.save()
-                    action = "Add"
-                elif form2['mode_name'].value() == "Edit":
-                    obj = WIJHARS.objects.get(id=form3['wijhars_name'].value())
-                    form = WIJHARSForm(data=request.POST, mode=form2["mode_name"].value(), instance=obj)
-                    form.save()
-                    action = "Edit"
-                else:
-                    obj = WIJHARS.objects.get(id=form3['wijhars_name'].value())
-                    obj.delete()
-                    action = "Delete"
-            else:
-                messages.error(request, form.errors)
-
-    contex = {
-        "form0": form2,
-        "form1": form,
-        "form2": form3,
-        "action": action
-    }
-    if request.is_ajax():
-        idx = request.body.decode()
-        obj = WIJHARS.objects.get(id=idx)
-        return JsonResponse({
-            'name': obj.name,
-        }, status=200)
+    json_response, contex = add_others_to_database(request, WIJHARSForm, FindWIJHARSs,WIJHARS, 'wijhars_name')
+    if json_response:
+        return json_response
     if request.user.is_authenticated:
         return render(request, 'wijhars_add.html', contex)
     else:
