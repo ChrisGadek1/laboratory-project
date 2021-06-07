@@ -1,12 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Account
 from django.contrib.auth import password_validation
 # Create your views here.
 
 
 def password_change_view(request, *args, **kwargs):
-    username = Account.get_username(request.user)
     list = []
     error_message = {'error' : list}
 

@@ -195,7 +195,6 @@ class Sampling(models.Model):
     batch_size = models.CharField(blank=True, null=True, max_length=50)
     batch_number = models.CharField(blank=True, null=True, max_length=50)
     batch_production_date = models.DateField(null=True)
-
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Sampling._meta.fields]
 

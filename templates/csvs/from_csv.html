@@ -39,6 +39,7 @@
 {% endblock %}
 
 {% block content %}
+
     <section>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -51,6 +52,20 @@
                 </div>
             </div>
                 <button type="submit" class="btn-primary">Odczytaj z pliku .csv</button>
+
+            </br></br>
+            {% if contains_errors %}
+                {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                {% else %}
+                    Poprawnie dodano dane
+                {% endif %}
+            {% endif %}
+
         </form>
 
     </section>

@@ -136,7 +136,7 @@ class ResearchForm(forms.ModelForm):
 
     class Meta:
         model = Research
-        fields = ('__all__')
+        fields = '__all__'
         labels = {
             'sampling': _('Kod próbki'),
             'name': _('Nazwa'),
@@ -272,7 +272,7 @@ class MetodAndNormForm(forms.ModelForm):
         }
 
 
-class FindMetodAndNorms(forms.ModelForm):
+class FindMethodAndNorms(forms.ModelForm):
     class Meta:
         model = FindMetodAndNorm
         fields = '__all__'

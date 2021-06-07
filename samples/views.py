@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import SampleForm, ResearchForm, ChoiceAction, FindResearch, ControlTypeForm, FindControlType,\
     DeliveryWayForm, FindDeliveryWays, WIJHARSForm, FindWIJHARSs, TypeForm, FindTypes, ResearchStatusForm, FindResearchStatuses, \
-    MetodAndNormForm, FindMetodAndNorms
+    MetodAndNormForm, FindMethodAndNorms
 from .models import Sampling, Research, ControlType, DeliveryWay, WIJHARS, Type, ResearchStatus, MetodAndNorm
 from django.contrib import messages
 from .utils import add_to_database, add_others_to_database
@@ -19,12 +19,12 @@ def main_site(request, *args, **kwargs):
 
 
 def sample_add(request, *args, **kwargs):
-    contains_error, action, form2, form3, form = add_to_database(request, SampleForm, ResearchForm, Sampling, 'number')
+    contains_error, action, form0, form2, form1 = add_to_database(request, SampleForm, ResearchForm, Sampling, 'number')
 
     contex = {
-        "form0": form2,
-        "form1": form,
-        "form2": form3,
+        "form0": form0,
+        "form1": form1,
+        "form2": form2,
         "action": action,
         "contains_error": contains_error
     }
@@ -112,10 +112,10 @@ def sample_search(request, *args, **kwargs):
 
 
 def research_add(request, *args, **kwargs):
-    contains_error, action, form2, form3, form = add_to_database(request, ResearchForm, FindResearch, Research, 'name')
+    contains_error, action, form0, form3, form2 = add_to_database(request, ResearchForm, FindResearch, Research, 'name')
     contex = {
-        "form0": form2,
-        "form2": form,
+        "form0": form0,
+        "form2": form2,
         "form3": form3,
         "action": action
     }
@@ -176,7 +176,7 @@ def Delivery_way_add(request, *args, **kwargs):
 
 
 def Metod_and_norm_add(request, *args, **kwargs):
-    json_response, contex = add_others_to_database(request, MetodAndNormForm, FindMetodAndNorms,MetodAndNorm, 'metod_and_norm_name')
+    json_response, contex = add_others_to_database(request, MetodAndNormForm, FindMethodAndNorms, MetodAndNorm, 'metod_and_norm_name')
     if json_response:
         return json_response
     if request.user.is_authenticated:

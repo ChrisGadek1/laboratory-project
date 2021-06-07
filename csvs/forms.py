@@ -5,7 +5,7 @@ from django import forms
 
 class DateInput(forms.DateInput):
     input_type = 'date'
-    input_formats = ('%Y-%m-%d')
+    input_formats = '%Y-%m-%d'
 
 
 class CsvOptionsAction(forms.ModelForm):
