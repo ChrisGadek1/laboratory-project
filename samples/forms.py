@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from .models import Sampling, Research, Mode, FindResearch, ControlType, FindControlType, \
     DeliveryWay, FindDeliveryWay, WIJHARS, FindWIJHARS, Type, FindType, ResearchStatus, FindResearchStatus, \
-    MetodAndNorm, FindMetodAndNorm
+    MetodAndNorm, FindMetodAndNorm, FindSample
 
 from django import forms
 
@@ -128,6 +128,14 @@ class FindResearch(forms.ModelForm):
             'research_name': _('Wybierz badanie')
         }
 
+
+class FindSampling(forms.ModelForm):
+    class Meta:
+        model = FindSample
+        fields = '__all__'
+        labels = {
+            'sample_number': _('Wybierz numer próbki')
+        }
 
 class ResearchForm(forms.ModelForm):
     def __init__(self, mode, *args, **kwargs):

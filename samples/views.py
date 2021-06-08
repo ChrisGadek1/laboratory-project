@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import SampleForm, ResearchForm, ChoiceAction, FindResearch, ControlTypeForm, FindControlType,\
     DeliveryWayForm, FindDeliveryWays, WIJHARSForm, FindWIJHARSs, TypeForm, FindTypes, ResearchStatusForm, FindResearchStatuses, \
-    MetodAndNormForm, FindMethodAndNorms
+    MetodAndNormForm, FindMethodAndNorms, FindSample
 from .models import Sampling, Research, ControlType, DeliveryWay, WIJHARS, Type, ResearchStatus, MetodAndNorm
 from django.contrib import messages
 from .utils import add_to_database, add_others_to_database

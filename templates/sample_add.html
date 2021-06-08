@@ -144,6 +144,7 @@
             window.onload = function(){
                 mode_change();
                 setSubmitButtonText();
+                document.getElementById("id_sampling").removeAttribute("required");
                 document.getElementById("id_mode_name").addEventListener("change", () => {
                     setSubmitButtonText();
                 });

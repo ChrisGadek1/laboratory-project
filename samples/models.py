@@ -195,6 +195,7 @@ class Sampling(models.Model):
     batch_size = models.CharField(blank=True, null=True, max_length=50)
     batch_number = models.CharField(blank=True, null=True, max_length=50)
     batch_production_date = models.DateField(null=True)
+
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Sampling._meta.fields]
 
@@ -236,13 +237,23 @@ class Research(models.Model):
 
 
 class FindResearch(models.Model):
-    research_name = models.ForeignKey(Research, on_delete=models.PROTECT)
+    research_name = models.ForeignKey(Research, on_delete=models.PROTECT, blank=True, null=True)
 
     def __str__(self):
         return "%s" % self.research_name
 
     def __unicode__(self):
         return u'%s' % self.research_name
+
+
+class FindSample(models.Model):
+    sample_number = models.ForeignKey(Sampling, on_delete=models.PROTECT, blank=True, null=True)
+
+    def __str__(self):
+        return "%s" % self.sample_number
+
+    def __unicode__(self):
+        return u'%s' % self.sample_number
 
 
 class Mode(models.Model):
